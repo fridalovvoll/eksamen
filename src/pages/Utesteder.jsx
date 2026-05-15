@@ -13,7 +13,7 @@ export default function Utesteder() {
   const steder = [
     // TROMSØ
     {
-      navn: "Heidis",
+      navn: "Heidis Bier Bar Tromsø",
       by: "Tromsø",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],
@@ -170,7 +170,7 @@ export default function Utesteder() {
       bilde: "/bilder/apollo.jpg",
     },
     {
-      navn: "Heidis Bergen",
+      navn: "Heidis Bier Bar Bergen",
       by: "Bergen",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],
@@ -226,7 +226,7 @@ export default function Utesteder() {
       bilde: "/bilder/tyven.jpg",
     },
     {
-      navn: "Heidis Trondheim",
+      navn: "Heidis Bier Bar Trondheim",
       by: "Trondheim",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],

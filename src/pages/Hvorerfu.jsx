@@ -7,7 +7,7 @@ import VenueCard from "../components/VenueCard";
 
 const initialVenues = {
   Tromsø: [
-  { title: "Heidis", votes: 0, image: "/bilder/heidis.jpg" },
+  { title: "Heidis Bier Bar Tromsø", votes: 0, image: "/bilder/heidis.jpg" },
   { title: "No Stress", votes: 0, image: "/bilder/no stress.jpg" },
   { title: "Solid", votes: 0, image: "/bilder/solid.jpg" },
   { title: "Verdensteateret", votes: 0, image: "/bilder/verdensteateret.jpg" },
@@ -30,7 +30,7 @@ const initialVenues = {
     { title: "Østre", votes: 0, image: "/bilder/ostre.jpeg" },
     { title: "Fincken", votes: 0, image: "/bilder/fincken.jpg" },
     { title: "Apollon", votes: 0, image: "/bilder/apollo.jpg" },
-    { title: "Heidis Bergen", votes: 0, image: "/bilder/heidis bergen.jpeg" },
+    { title: "Heidis Bier Bar Bergen", votes: 0, image: "/bilder/heidis bergen.jpeg" },
   ],
   Trondheim: [
     { title: "Lokal Bar", votes: 0, image: "/bilder/lokal bar.jpeg" },
@@ -38,7 +38,7 @@ const initialVenues = {
     { title: "Samfundet", votes: 0, image: "/bilder/samfundet.jpg" },
     { title: "BrukBar", votes: 0, image: "/bilder/brukbar.avif" },
     { title: "Tyven", votes: 0, image: "/bilder/tyven.jpg" },
-    { title: "Heidis Trondheim", votes: 0, image: "/bilder/heidis trondheim.jpeg" },
+    { title: "Heidis Bier Bar Trondheim", votes: 0, image: "/bilder/heidis trondheim.jpeg" },
   ],
 };
 
