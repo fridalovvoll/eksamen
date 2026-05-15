@@ -27,7 +27,7 @@ const initialVenues = {
   Bergen: [
     { title: "Lille", votes: 0, image: "/bilder/lille.png" },
     { title: "Kvarteret", votes: 0, image: "/bilder/kvarteret.jpeg" },
-    { title: "Østre", votes: 0, image: "/bilder/østre.jpeg" },
+    { title: "Østre", votes: 0, image: "/bilder/ostre.jpeg" },
     { title: "Fincken", votes: 0, image: "/bilder/fincken.jpg" },
     { title: "Apollon", votes: 0, image: "/bilder/apollo.jpg" },
     { title: "Heidis Bergen", votes: 0, image: "/bilder/heidis bergen.jpeg" },
