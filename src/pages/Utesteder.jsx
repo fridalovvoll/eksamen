@@ -5,6 +5,8 @@ export default function Utesteder() {
   const [valgtBy, setValgtBy] = useState("");
   const [valgtVibe, setValgtVibe] = useState("");
   const [valgtMusikk, setValgtMusikk] = useState("");
+  // Lagrer hvilket card musa er over
+const [hoverIndex, setHoverIndex] = useState(null);
 
   // Liste med alle utestedene
   const steder = [
@@ -233,8 +235,28 @@ export default function Utesteder() {
     >
       <div style={{ display: "flex", gap: "60px" }}>
         {/* FILTERMENY */}
-        <div style={{ width: "230px" }}>
-          <h2>Byer</h2>
+        <div
+  style={{
+    width: "180px",
+    border: "2px solid rgba(255,255,255,0.25)", // firkant rundt filteret
+    borderRadius: "25px",
+    padding: "18px",
+    boxShadow: "0 0 25px rgba(255,0,184,0.25)",
+    background: "rgba(255,255,255,0.04)",
+  }}
+>
+          <h2
+  style={{
+    fontSize: "28px",
+    fontWeight: "900",
+    color: "#b8a7ff",
+    textShadow: "0 0 18px #6c63ff",
+    letterSpacing: "-2px",
+    marginBottom: "30px",
+  }}
+>
+  tittel for BYER
+</h2>
 
           {/* Knapper for by */}
           {["Tromsø", "Oslo", "Bergen", "Trondheim",].map((by) => (
@@ -249,7 +271,20 @@ export default function Utesteder() {
             </label>
           ))}
 
-          <h2 style={{ marginTop: "45px" }}>Vibe</h2>
+          {/* TITTEL FOR VIBE */}
+<h2
+  style={{
+    fontSize: "28px",
+    fontWeight: "900",
+    color: "#b8a7ff",
+    textShadow: "0 0 18px #6c63ff",
+    letterSpacing: "-2px",
+    marginTop: "60px",
+    marginBottom: "30px",
+  }}
+>
+  VIBE
+</h2>
 
           {/* Knapper for vibe */}
           {["Fylla", "Sosialt", "Rolig"].map((vibe) => (
@@ -264,7 +299,20 @@ export default function Utesteder() {
             </label>
           ))}
 
-          <h2 style={{ marginTop: "45px" }}>Musikk</h2>
+          {/* TITTEL FOR MUSIKK */}
+<h2
+  style={{
+    fontSize: "28px",
+    fontWeight: "900",
+    color: "#b8a7ff",
+    textShadow: "0 0 18px #6c63ff",
+    letterSpacing: "-2px",
+    marginTop: "60px",
+    marginBottom: "30px",
+  }}
+>
+  MUSIKK
+</h2>
 
           {/* Knapper for musikk */}
           {["Live", "Pop", "Techno", "Hip Hop/RnB"].map((musikk) => (
@@ -336,16 +384,26 @@ export default function Utesteder() {
           >
             {filtrerteSteder.map((sted, index) => (
               <div
-                key={index}
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: "28px",
-                  padding: "18px",
-                  boxShadow: "0 0 25px rgba(108,99,255,0.2)",
-                  backdropFilter: "blur(8px)",
-                }}
-              >
+  key={index}
+  onMouseEnter={() => setHoverIndex(index)} // når musa går over cardet
+  onMouseLeave={() => setHoverIndex(null)} // når musa går bort fra cardet
+  style={{
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.12)",
+    borderRadius: "28px",
+    padding: "18px",
+    boxShadow:
+      hoverIndex === index
+        ? "0 0 45px rgba(255,0,184,0.55)"
+        : "0 0 25px rgba(108,99,255,0.2)",
+    backdropFilter: "blur(8px)",
+
+    // gjør at cardet blir større når musa er over
+    transform: hoverIndex === index ? "scale(1.06)" : "scale(1)",
+    transition: "0.25s ease",
+    cursor: "pointer",
+  }}
+>
                 {/* Bilde av utested */}
                 <img
                   src={sted.bilde}
@@ -359,15 +417,37 @@ export default function Utesteder() {
                   }}
                 />
 
-                <h3 style={{ fontSize: "28px", marginBottom: "8px" }}>
+                <h3
+  style={{
+    fontSize: "38px", // større tittel
+    fontWeight: "800",
+    marginTop: "18px",
+    marginBottom: "14px",
+    letterSpacing: "-1px",
+  }}
+>
                   {sted.navn}
                 </h3>
 
-                <p style={{ color: "#c9c4ff", fontSize: "18px" }}>
+                <p
+  style={{
+    color: "#c9c4ff",
+    fontSize: "24px", // større vibe/musikk tekst
+    fontWeight: "600",
+    marginBottom: "18px",
+  }}
+>
                   {sted.vibe.join(" • ")} • {sted.musikk.join(" • ")}
                 </p>
 
-                <p style={{ fontSize: "16px", lineHeight: "1.5" }}>
+                <p
+  style={{
+    fontSize: "24px", // større beskrivelse
+    lineHeight: "1.6",
+    fontWeight: "500",
+    color: "rgba(255,255,255,0.92)",
+  }}
+>
                   {sted.beskrivelse}
                 </p>
               </div>
