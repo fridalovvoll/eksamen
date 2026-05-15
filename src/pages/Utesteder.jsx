@@ -1,30 +1,33 @@
 import React, { useState } from "react";
 
 export default function Utesteder() {
-  // Her lagres valgene brukeren trykker på
+  // Lagrer hvilket filter brukeren har valgt
   const [valgtBy, setValgtBy] = useState("");
   const [valgtVibe, setValgtVibe] = useState("");
   const [valgtMusikk, setValgtMusikk] = useState("");
-  // Lagrer hvilket card musa er over
-const [hoverIndex, setHoverIndex] = useState(null);
 
-  // Liste med alle utestedene
+  // Brukes for hover-effekt på cards
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+  // Alle utestedene på siden
   const steder = [
     // TROMSØ
     {
-      navn: "Heidis Bier Bar",
+      navn: "Heidis",
       by: "Tromsø",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Heidis er et sosialt utested med allsang, popmusikk og høy feststemning.",
+      beskrivelse:
+        "Heidis er et sosialt utested med høy allsangfaktor, popmusikk og full feststemning.",
       bilde: "/bilder/heidis.jpg",
     },
     {
       navn: "Kaia",
       by: "Tromsø",
-      vibe: ["Sosialt", "Rolig"],
+      vibe: ["Rolig", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Kaia passer godt for en sosial kveld med venner i et avslappet miljø.",
+      beskrivelse:
+        "Kaia passer godt for en sosial kveld med venner i et avslappet miljø.",
       bilde: "/bilder/kaia.jpg",
     },
     {
@@ -32,7 +35,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Tromsø",
       vibe: ["Sosialt", "Rolig"],
       musikk: ["Pop"],
-      beskrivelse: "Solid er et sosialt utested hvor man kan spille kort, kjøpe drinker og henge med venner.",
+      beskrivelse:
+        "Solid er et sosialt utested hvor man kan spille kort, kjøpe drinker og henge med venner.",
       bilde: "/bilder/solid.jpg",
     },
     {
@@ -40,7 +44,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Tromsø",
       vibe: ["Rolig", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "No Stress har en avslappet stemning og passer godt for å henge med venner.",
+      beskrivelse:
+        "No Stress er et rolig og sosialt utested med avslappet stemning og popmusikk i bakgrunnen.",
       bilde: "/bilder/no stress.jpg",
     },
     {
@@ -48,7 +53,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Tromsø",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Hip Hop/RnB", "Pop"],
-      beskrivelse: "Skins passer for en kveld med dans, drinker og sosial stemning.",
+      beskrivelse:
+        "Skins passer for en kveld med dans, drinker og sosial stemning.",
       bilde: "/bilder/skins.jpeg",
     },
     {
@@ -56,7 +62,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Tromsø",
       vibe: ["Rolig", "Sosialt"],
       musikk: ["Live"],
-      beskrivelse: "Verdensteateret passer for en roligere kveld med kultur, samtaler og god stemning.",
+      beskrivelse:
+        "Verdensteateret passer for en roligere kveld med kultur, samtaler og god stemning.",
       bilde: "/bilder/verdensteateret.jpg",
     },
 
@@ -66,7 +73,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Oslo",
       vibe: ["Sosialt"],
       musikk: ["Live", "Techno"],
-      beskrivelse: "Blå er et sosialt utested med live musikk, DJ-er og elektroniske klubbkvelder. Stedet passer godt for deg som vil oppleve konserter, techno og en kreativ atmosfære.",
+      beskrivelse:
+        "Blå er et sosialt utested med live musikk, DJ-er og elektroniske klubbkvelder.",
       bilde: "/bilder/bla.jpg",
     },
     {
@@ -74,7 +82,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Oslo",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Techno"],
-      beskrivelse: "Jaeger er et livlig utested for deg som liker fylla, dansing og techno. Her er det høy energi, DJ-er og klubbfølelse gjennom kvelden.",
+      beskrivelse:
+        "Jaeger passer for techno, dansing og lange kvelder med høy energi.",
       bilde: "/bilder/jaeger.jpg",
     },
     {
@@ -82,7 +91,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Oslo",
       vibe: ["Fylla"],
       musikk: ["Techno"],
-      beskrivelse: "The Villa er et klubbpreget utested med fokus på techno og elektronisk musikk. Det passer godt for deg som vil ha en kveld med fylla, dans og mørk klubbstemning",
+      beskrivelse:
+        "The Villa er et klubbpreget utested med fokus på techno og elektronisk musikk.",
       bilde: "/bilder/the villa.jpg",
     },
     {
@@ -90,7 +100,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Oslo",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Hip Hop/RnB"],
-      beskrivelse: "Nox er et sosialt og festpreget utested med hip hop og RnB. Stedet passer for deg som vil danse, kjøpe drinker og være ute med venner.",
+      beskrivelse:
+        "Nox er et sosialt og festpreget utested med hip hop og RnB.",
       bilde: "/bilder/nox.jpg",
     },
     {
@@ -98,7 +109,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Oslo",
       vibe: ["Rolig", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Kulturhuset er et rolig og sosialt utested med avslappet stemning og popmusikk. Det passer godt for å henge med venner, prate og ta noe godt å drikke.",
+      beskrivelse:
+        "Kulturhuset passer for en sosial kveld med venner, drinker og avslappet stemning.",
       bilde: "/bilder/kulturhuset.jpg",
     },
     {
@@ -106,7 +118,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Oslo",
       vibe: ["Sosialt"],
       musikk: ["Live", "Techno"],
-      beskrivelse: "Ingensteds er et sosialt utested med live musikk, DJ-er og techno. Stedet passer for deg som vil ha en kveld med musikk, dans og god stemning.",
+      beskrivelse:
+        "Ingensteds kombinerer konserter, DJ-er og sosial stemning.",
       bilde: "/bilder/ingensteds.webp",
     },
 
@@ -116,7 +129,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Bergen",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Lille er et sosialt og festpreget utested med popmusikk, allsang og høy stemning. Det passer godt for fylla og en kveld ute med venner",
+      beskrivelse:
+        "Lille er et sosialt og festpreget utested med popmusikk, allsang og høy stemning.",
       bilde: "/bilder/lille.png",
     },
     {
@@ -124,7 +138,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Bergen",
       vibe: ["Sosialt"],
       musikk: ["Live"],
-      beskrivelse: "Kvarteret er et sosialt utested med live musikk, konserter og arrangementer. Stedet passer godt for deg som vil kombinere musikkopplevelser med en sosial kveld.",
+      beskrivelse:
+        "Kvarteret har konserter, arrangementer og sosial studentstemning.",
       bilde: "/bilder/kvarteret.jpeg",
     },
     {
@@ -132,15 +147,17 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Bergen",
       vibe: ["Fylla"],
       musikk: ["Techno"],
-      beskrivelse: "Østre er et utested for deg som liker fylla, techno og elektronisk musikk. Her er det klubbstemning, DJ-er og god energi på dansegulvet.",
-      bilde: "/bilder/østre.jpeg",
+      beskrivelse:
+        "Østre passer for techno, elektronisk musikk og klubbkvelder.",
+      bilde: "/bilder/ostre.jpeg",
     },
     {
       navn: "Fincken",
       by: "Bergen",
       vibe: ["Sosialt"],
       musikk: ["Pop", "Hip Hop/RnB"],
-      beskrivelse: "Fincken er et sosialt utested med pop, hip hop og RnB. Det passer godt for dansing, drinker og en kveld med variert musikk og god stemning.",
+      beskrivelse:
+        "Fincken byr på dansing, sosial stemning og variert musikk.",
       bilde: "/bilder/fincken.jpg",
     },
     {
@@ -148,7 +165,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Bergen",
       vibe: ["Rolig"],
       musikk: ["Live"],
-      beskrivelse: "Apollon er et roligere utested med live musikk og avslappet atmosfære. Det passer godt for en kveld med gode samtaler og musikk i bakgrunnen.",
+      beskrivelse:
+        "Apollon er et roligere utested med live musikk og avslappet atmosfære.",
       bilde: "/bilder/apollo.jpg",
     },
     {
@@ -156,7 +174,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Bergen",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Heidis Bergen er et festpreget og sosialt utested med popmusikk, allsang og høy energi. Det passer godt for fylla, dansing og vennegjenger.",
+      beskrivelse:
+        "Heidis Bergen passer for allsang, dansing og fest med venner.",
       bilde: "/bilder/heidis bergen.jpeg",
     },
 
@@ -166,7 +185,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Trondheim",
       vibe: ["Rolig", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Lokal Bar er et rolig og sosialt utested med popmusikk og avslappet stemning. Det passer godt for å henge med venner i et behagelig miljø",
+      beskrivelse:
+        "Lokal Bar er et rolig og sosialt utested med popmusikk og avslappet stemning.",
       bilde: "/bilder/lokal bar.jpeg",
     },
     {
@@ -174,7 +194,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Trondheim",
       vibe: ["Fylla"],
       musikk: ["Techno"],
-      beskrivelse: "Diskoteket er et festpreget utested med techno, dansing og høy energi. Det passer godt for fylla og en kveld på dansegulvet med venner.",
+      beskrivelse:
+        "Diskoteket er et festpreget utested med techno, dansing og høy energi.",
       bilde: "/bilder/diskoteket.jpeg",
     },
     {
@@ -182,7 +203,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Trondheim",
       vibe: ["Sosialt"],
       musikk: ["Live", "Pop"],
-      beskrivelse: "Samfundet er et sosialt utested med live musikk, pop og studentstemning. Det passer godt for konserter, arrangementer og en kveld med venner.",
+      beskrivelse:
+        "Samfundet har konserter, arrangementer og sosial studentstemning.",
       bilde: "/bilder/samfundet.jpg",
     },
     {
@@ -190,7 +212,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Trondheim",
       vibe: ["Sosialt", "Fylla"],
       musikk: ["Hip Hop/RnB"],
-      beskrivelse: "BrukBar er et sosialt og festpreget utested med hip hop og RnB. Her passer det å dra for drinker, dansing og god stemning.",
+      beskrivelse:
+        "BrukBar passer for drinker, dansing og hip hop/RnB.",
       bilde: "/bilder/brukbar.avif",
     },
     {
@@ -198,7 +221,8 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Trondheim",
       vibe: ["Rolig"],
       musikk: ["Live"],
-      beskrivelse: "Tyven er et roligere utested med live musikk og intim stemning. Det passer godt for en avslappet kveld med konserter og gode samtaler.",
+      beskrivelse:
+        "Tyven er et roligere utested med live musikk og intim stemning.",
       bilde: "/bilder/tyven.jpg",
     },
     {
@@ -206,14 +230,13 @@ const [hoverIndex, setHoverIndex] = useState(null);
       by: "Trondheim",
       vibe: ["Fylla", "Sosialt"],
       musikk: ["Pop"],
-      beskrivelse: "Heidis Trondheim er et sosialt og festpreget utested med popmusikk og allsang. Det passer godt for fylla, dansing og store vennegjenger.",
+      beskrivelse:
+        "Heidis Trondheim er et sosialt og festpreget utested med popmusikk og allsang.",
       bilde: "/bilder/heidis trondheim.jpeg",
     },
-
-    
   ];
 
-  // Filtrerer utestedene etter valgene brukeren har tatt
+  // Filtrerer stedene etter by, vibe og musikk
   const filtrerteSteder = steder.filter((sted) => {
     const passerBy = valgtBy !== "" && sted.by === valgtBy;
     const passerVibe = valgtVibe === "" || sted.vibe.includes(valgtVibe);
@@ -229,38 +252,54 @@ const [hoverIndex, setHoverIndex] = useState(null);
         background:
           "radial-gradient(circle at 25% 35%, rgba(255,0,184,0.22), transparent 35%), radial-gradient(circle at 75% 75%, rgba(0,170,255,0.18), transparent 35%), #030512",
         color: "white",
-        fontFamily: "Arial",
-        padding: "60px",
+        fontFamily: "Arial, sans-serif",
+        padding: "55px",
       }}
     >
-      <div style={{ display: "flex", gap: "60px" }}>
-        {/* FILTERMENY */}
+      {/* Hele innholdet */}
+      <div
+        style={{
+          display: "flex",
+          gap: "50px",
+          alignItems: "flex-start",
+        }}
+      >
+        {/* VENSTRE FILTERBOKS */}
         <div
-  style={{
-    width: "180px",
-    border: "2px solid rgba(255,255,255,0.25)", // firkant rundt filteret
-    borderRadius: "25px",
-    padding: "18px",
-    boxShadow: "0 0 25px rgba(255,0,184,0.25)",
-    background: "rgba(255,255,255,0.04)",
-  }}
->
+          style={{
+            width: "210px",
+            border: "1px solid rgba(255,255,255,0.18)",
+            borderRadius: "20px",
+            padding: "25px",
+            background: "rgba(255,255,255,0.04)",
+            boxShadow: "0 0 20px rgba(255,0,184,0.18)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          {/* BYER */}
           <h2
-  style={{
-    fontSize: "28px",
-    fontWeight: "900",
-    color: "#b8a7ff",
-    textShadow: "0 0 18px #6c63ff",
-    letterSpacing: "-2px",
-    marginBottom: "30px",
-  }}
->
-  tittel for BYER
-</h2>
+            style={{
+              fontSize: "24px",
+              fontWeight: "800",
+              color: "#b8a7ff",
+              textShadow: "0 0 10px #6c63ff",
+              marginTop: "0px",
+              marginBottom: "18px",
+            }}
+          >
+            BYER
+          </h2>
 
-          {/* Knapper for by */}
-          {["Tromsø", "Oslo", "Bergen", "Trondheim",].map((by) => (
-            <label key={by} style={{ display: "block", fontSize: "21px", marginBottom: "15px" }}>
+          {["Tromsø", "Oslo", "Bergen", "Trondheim"].map((by) => (
+            <label
+              key={by}
+              style={{
+                display: "block",
+                fontSize: "16px",
+                marginBottom: "10px",
+                cursor: "pointer",
+              }}
+            >
               <input
                 type="radio"
                 name="by"
@@ -271,24 +310,30 @@ const [hoverIndex, setHoverIndex] = useState(null);
             </label>
           ))}
 
-          {/* TITTEL FOR VIBE */}
-<h2
-  style={{
-    fontSize: "28px",
-    fontWeight: "900",
-    color: "#b8a7ff",
-    textShadow: "0 0 18px #6c63ff",
-    letterSpacing: "-2px",
-    marginTop: "60px",
-    marginBottom: "30px",
-  }}
->
-  VIBE
-</h2>
+          {/* VIBE */}
+          <h2
+            style={{
+              fontSize: "24px",
+              fontWeight: "800",
+              color: "#b8a7ff",
+              textShadow: "0 0 10px #6c63ff",
+              marginTop: "35px",
+              marginBottom: "18px",
+            }}
+          >
+            VIBE
+          </h2>
 
-          {/* Knapper for vibe */}
           {["Fylla", "Sosialt", "Rolig"].map((vibe) => (
-            <label key={vibe} style={{ display: "block", fontSize: "21px", marginBottom: "15px" }}>
+            <label
+              key={vibe}
+              style={{
+                display: "block",
+                fontSize: "16px",
+                marginBottom: "10px",
+                cursor: "pointer",
+              }}
+            >
               <input
                 type="radio"
                 name="vibe"
@@ -299,24 +344,30 @@ const [hoverIndex, setHoverIndex] = useState(null);
             </label>
           ))}
 
-          {/* TITTEL FOR MUSIKK */}
-<h2
-  style={{
-    fontSize: "28px",
-    fontWeight: "900",
-    color: "#b8a7ff",
-    textShadow: "0 0 18px #6c63ff",
-    letterSpacing: "-2px",
-    marginTop: "60px",
-    marginBottom: "30px",
-  }}
->
-  MUSIKK
-</h2>
+          {/* MUSIKK */}
+          <h2
+            style={{
+              fontSize: "24px",
+              fontWeight: "800",
+              color: "#b8a7ff",
+              textShadow: "0 0 10px #6c63ff",
+              marginTop: "35px",
+              marginBottom: "18px",
+            }}
+          >
+            MUSIKK
+          </h2>
 
-          {/* Knapper for musikk */}
           {["Live", "Pop", "Techno", "Hip Hop/RnB"].map((musikk) => (
-            <label key={musikk} style={{ display: "block", fontSize: "21px", marginBottom: "15px" }}>
+            <label
+              key={musikk}
+              style={{
+                display: "block",
+                fontSize: "16px",
+                marginBottom: "10px",
+                cursor: "pointer",
+              }}
+            >
               <input
                 type="radio"
                 name="musikk"
@@ -327,7 +378,7 @@ const [hoverIndex, setHoverIndex] = useState(null);
             </label>
           ))}
 
-          {/* Nullstiller alle valg */}
+          {/* Nullstiller alle filter */}
           <button
             onClick={() => {
               setValgtBy("");
@@ -335,13 +386,14 @@ const [hoverIndex, setHoverIndex] = useState(null);
               setValgtMusikk("");
             }}
             style={{
-              marginTop: "35px",
-              padding: "12px 18px",
-              borderRadius: "20px",
+              marginTop: "25px",
+              padding: "9px 14px",
+              borderRadius: "18px",
               border: "none",
               background: "#ff00b8",
               color: "white",
               fontWeight: "bold",
+              fontSize: "13px",
               cursor: "pointer",
             }}
           >
@@ -353,110 +405,136 @@ const [hoverIndex, setHoverIndex] = useState(null);
         <div style={{ flex: 1 }}>
           <h1
             style={{
-              fontSize: "55px",
-              marginBottom: "15px",
+              fontSize: "46px",
+              marginTop: "0px",
+              marginBottom: "10px",
               color: "#b8a7ff",
-              textShadow: "0 0 20px #6c63ff",
+              textShadow: "0 0 16px #6c63ff",
             }}
           >
             Utesteder
           </h1>
 
-          {/* Tekst før man har valgt by */}
+          {/* Vises før brukeren velger by */}
           {valgtBy === "" && (
-            <p style={{ fontSize: "24px", color: "#c9c4ff" }}>
-              Velg en by for å se utesteder.
-            </p>
+            <p
+  style={{
+    fontSize: "24px",
+    color: "#c9c4ff",
+
+    // gjør at teksten havner midt på siden
+    textAlign: "center",
+    width: "100%",
+    marginTop: "120px",
+  }}
+>
+  Velg en by for å se utesteder ✨
+</p>
           )}
 
           {/* Viser valgt by */}
           {valgtBy !== "" && (
-            <h2 style={{ marginBottom: "35px" }}>Utesteder i {valgtBy}</h2>
+            <h2
+              style={{
+                fontSize: "22px",
+                marginBottom: "28px",
+                fontWeight: "600",
+              }}
+            >
+              Utesteder i {valgtBy}
+            </h2>
           )}
 
           {/* Grid med cards */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "40px",
+              gridTemplateColumns: "repeat(3, 300px)",
+              gap: "28px",
             }}
           >
             {filtrerteSteder.map((sted, index) => (
               <div
-  key={index}
-  onMouseEnter={() => setHoverIndex(index)} // når musa går over cardet
-  onMouseLeave={() => setHoverIndex(null)} // når musa går bort fra cardet
-  style={{
-    background: "rgba(255,255,255,0.05)",
-    border: "1px solid rgba(255,255,255,0.12)",
-    borderRadius: "28px",
-    padding: "18px",
-    boxShadow:
-      hoverIndex === index
-        ? "0 0 45px rgba(255,0,184,0.55)"
-        : "0 0 25px rgba(108,99,255,0.2)",
-    backdropFilter: "blur(8px)",
-
-    // gjør at cardet blir større når musa er over
-    transform: hoverIndex === index ? "scale(1.06)" : "scale(1)",
-    transition: "0.25s ease",
-    cursor: "pointer",
-  }}
->
-                {/* Bilde av utested */}
+                key={index}
+                onMouseEnter={() => setHoverIndex(index)}
+                onMouseLeave={() => setHoverIndex(null)}
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "20px",
+                  padding: "14px",
+                  boxShadow:
+                    hoverIndex === index
+                      ? "0 0 35px rgba(255,0,184,0.45)"
+                      : "0 0 18px rgba(108,99,255,0.18)",
+                  backdropFilter: "blur(8px)",
+                  transform:
+                    hoverIndex === index ? "scale(1.04)" : "scale(1)",
+                  transition: "0.25s ease",
+                  cursor: "pointer",
+                }}
+              >
+                {/* Bilde */}
                 <img
                   src={sted.bilde}
                   alt={sted.navn}
                   style={{
                     width: "100%",
-                    height: "190px",
+                    height: "150px",
                     objectFit: "cover",
-                    borderRadius: "22px",
-                    boxShadow: "0 0 30px rgba(255,0,184,0.35)",
+                    borderRadius: "16px",
+                    boxShadow: "0 0 20px rgba(255,0,184,0.25)",
                   }}
                 />
 
+                {/* Navn */}
                 <h3
-  style={{
-    fontSize: "38px", // større tittel
-    fontWeight: "800",
-    marginTop: "18px",
-    marginBottom: "14px",
-    letterSpacing: "-1px",
-  }}
->
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: "800",
+                    marginTop: "15px",
+                    marginBottom: "8px",
+                  }}
+                >
                   {sted.navn}
                 </h3>
 
+                {/* Vibe og musikk */}
                 <p
-  style={{
-    color: "#c9c4ff",
-    fontSize: "24px", // større vibe/musikk tekst
-    fontWeight: "600",
-    marginBottom: "18px",
-  }}
->
+                  style={{
+                    color: "#c9c4ff",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    marginBottom: "12px",
+                  }}
+                >
                   {sted.vibe.join(" • ")} • {sted.musikk.join(" • ")}
                 </p>
 
+                {/* Beskrivelse */}
                 <p
-  style={{
-    fontSize: "24px", // større beskrivelse
-    lineHeight: "1.6",
-    fontWeight: "500",
-    color: "rgba(255,255,255,0.92)",
-  }}
->
+                  style={{
+                    fontSize: "14px",
+                    lineHeight: "1.5",
+                    color: "rgba(255,255,255,0.92)",
+                    margin: 0,
+                  }}
+                >
                   {sted.beskrivelse}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Vises hvis ingen steder passer filtrene */}
+          {/* Vises hvis ingen steder matcher filtrene */}
           {valgtBy !== "" && filtrerteSteder.length === 0 && (
-            <p style={{ fontSize: "24px", marginTop: "40px" }}>
+            <p
+              style={{
+                fontSize: "20px",
+                marginTop: "30px",
+                color: "#c9c4ff",
+              }}
+            >
               Ingen utesteder passer med valgene dine.
             </p>
           )}
