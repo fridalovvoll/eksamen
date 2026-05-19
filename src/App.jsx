@@ -5,9 +5,8 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 import Hjem from "./pages/Hjem";
-import Utesteder from "./pages/Utesteder";
 import Hvorerfu from './pages/Hvorerfu';
-import Utesteder2 from './pages/Utesteder2';
+import Utesteder from './pages/Utesteder';
 import Nav from './components/Nav';
 import AddSted from './pages/AddSted';
 import Signup from './pages/Signup';
@@ -23,9 +22,8 @@ function App() {
     
 <Routes>
       <Route path="/" element={<Hjem />} />
-      <Route path="/utesteder" element={<Utesteder />} />
+      <Route path="/utesteder" element={<Utesteder/>} />
       <Route path="/hvorerfu" element={<Hvorerfu/>} />
-      <Route path="/utesteder2" element={<Utesteder2/>} />
             <Route path="/addsted" element={<AddSted />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/login" element={<Login />} />

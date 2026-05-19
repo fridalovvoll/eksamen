@@ -1,246 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Utesteder() {
-  // Lagrer hvilket filter brukeren har valgt
   const [valgtBy, setValgtBy] = useState("");
   const [valgtVibe, setValgtVibe] = useState("");
   const [valgtMusikk, setValgtMusikk] = useState("");
-
-  // Brukes for hover-effekt på cards
   const [hoverIndex, setHoverIndex] = useState(null);
+  const [steder, setSteder] = useState([]);
 
-  // Alle utestedene på siden
-  const steder = [
-    // TROMSØ
-    {
-      navn: "Heidis Bier Bar Tromsø",
-      by: "Tromsø",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Heidis er et sosialt utested med høy allsangfaktor, popmusikk og full feststemning.",
-      bilde: "/bilder/heidis.jpg",
-    },
-    {
-      navn: "Kaia",
-      by: "Tromsø",
-      vibe: ["Rolig", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Kaia passer godt for en sosial kveld med venner i et avslappet miljø.",
-      bilde: "/bilder/kaia.jpg",
-    },
-    {
-      navn: "Solid",
-      by: "Tromsø",
-      vibe: ["Sosialt", "Rolig"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Solid er et sosialt utested hvor man kan spille kort, kjøpe drinker og henge med venner.",
-      bilde: "/bilder/solid.jpg",
-    },
-    {
-      navn: "No Stress",
-      by: "Tromsø",
-      vibe: ["Rolig", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "No Stress er et rolig og sosialt utested med avslappet stemning og popmusikk i bakgrunnen.",
-      bilde: "/bilder/no stress.jpg",
-    },
-    {
-      navn: "Skins",
-      by: "Tromsø",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Hip Hop/RnB", "Pop"],
-      beskrivelse:
-        "Skins passer for en kveld med dans, drinker og sosial stemning.",
-      bilde: "/bilder/skins.jpeg",
-    },
-    {
-      navn: "Verdensteateret",
-      by: "Tromsø",
-      vibe: ["Rolig", "Sosialt"],
-      musikk: ["Live"],
-      beskrivelse:
-        "Verdensteateret passer for en roligere kveld med kultur, samtaler og god stemning.",
-      bilde: "/bilder/verdensteateret.jpg",
-    },
+  useEffect(() => {
+    async function hentSteder() {
+      const querySnapshot = await getDocs(collection(db, "steder"));
 
-    // OSLO
-    {
-      navn: "Blå",
-      by: "Oslo",
-      vibe: ["Sosialt"],
-      musikk: ["Live", "Techno"],
-      beskrivelse:
-        "Blå er et sosialt utested med live musikk, DJ-er og elektroniske klubbkvelder.",
-      bilde: "/bilder/bla.jpg",
-    },
-    {
-      navn: "Jaeger",
-      by: "Oslo",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Techno"],
-      beskrivelse:
-        "Jaeger passer for techno, dansing og lange kvelder med høy energi.",
-      bilde: "/bilder/jaeger.jpg",
-    },
-    {
-      navn: "The Villa",
-      by: "Oslo",
-      vibe: ["Fylla"],
-      musikk: ["Techno"],
-      beskrivelse:
-        "The Villa er et klubbpreget utested med fokus på techno og elektronisk musikk.",
-      bilde: "/bilder/the villa.jpg",
-    },
-    {
-      navn: "Nox",
-      by: "Oslo",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Hip Hop/RnB"],
-      beskrivelse:
-        "Nox er et sosialt og festpreget utested med hip hop og RnB.",
-      bilde: "/bilder/nox.jpg",
-    },
-    {
-      navn: "Kulturhuset",
-      by: "Oslo",
-      vibe: ["Rolig", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Kulturhuset passer for en sosial kveld med venner, drinker og avslappet stemning.",
-      bilde: "/bilder/kulturhuset.jpg",
-    },
-    {
-      navn: "Ingensteds",
-      by: "Oslo",
-      vibe: ["Sosialt"],
-      musikk: ["Live", "Techno"],
-      beskrivelse:
-        "Ingensteds kombinerer konserter, DJ-er og sosial stemning.",
-      bilde: "/bilder/ingensteds.webp",
-    },
+      const liste = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    // BERGEN
-    {
-      navn: "Lille",
-      by: "Bergen",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Lille er et sosialt og festpreget utested med popmusikk, allsang og høy stemning.",
-      bilde: "/bilder/lille.png",
-    },
-    {
-      navn: "Kvarteret",
-      by: "Bergen",
-      vibe: ["Sosialt"],
-      musikk: ["Live"],
-      beskrivelse:
-        "Kvarteret har konserter, arrangementer og sosial studentstemning.",
-      bilde: "/bilder/kvarteret.jpeg",
-    },
-    {
-      navn: "Østre",
-      by: "Bergen",
-      vibe: ["Fylla"],
-      musikk: ["Techno"],
-      beskrivelse:
-        "Østre passer for techno, elektronisk musikk og klubbkvelder.",
-      bilde: "/bilder/ostre.jpeg",
-    },
-    {
-      navn: "Fincken",
-      by: "Bergen",
-      vibe: ["Sosialt"],
-      musikk: ["Pop", "Hip Hop/RnB"],
-      beskrivelse:
-        "Fincken byr på dansing, sosial stemning og variert musikk.",
-      bilde: "/bilder/fincken.jpg",
-    },
-    {
-      navn: "Apollon",
-      by: "Bergen",
-      vibe: ["Rolig"],
-      musikk: ["Live"],
-      beskrivelse:
-        "Apollon er et roligere utested med live musikk og avslappet atmosfære.",
-      bilde: "/bilder/apollo.jpg",
-    },
-    {
-      navn: "Heidis Bier Bar Bergen",
-      by: "Bergen",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Heidis Bergen passer for allsang, dansing og fest med venner.",
-      bilde: "/bilder/heidis bergen.jpeg",
-    },
+      setSteder(liste);
+    }
 
-    // TRONDHEIM
-    {
-      navn: "Lokal Bar",
-      by: "Trondheim",
-      vibe: ["Rolig", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Lokal Bar er et rolig og sosialt utested med popmusikk og avslappet stemning.",
-      bilde: "/bilder/lokal bar.jpeg",
-    },
-    {
-      navn: "Diskoteket",
-      by: "Trondheim",
-      vibe: ["Fylla"],
-      musikk: ["Techno"],
-      beskrivelse:
-        "Diskoteket er et festpreget utested med techno, dansing og høy energi.",
-      bilde: "/bilder/diskoteket.jpeg",
-    },
-    {
-      navn: "Samfundet",
-      by: "Trondheim",
-      vibe: ["Sosialt"],
-      musikk: ["Live", "Pop"],
-      beskrivelse:
-        "Samfundet har konserter, arrangementer og sosial studentstemning.",
-      bilde: "/bilder/samfundet.jpg",
-    },
-    {
-      navn: "BrukBar",
-      by: "Trondheim",
-      vibe: ["Sosialt", "Fylla"],
-      musikk: ["Hip Hop/RnB"],
-      beskrivelse:
-        "BrukBar passer for drinker, dansing og hip hop/RnB.",
-      bilde: "/bilder/brukbar.avif",
-    },
-    {
-      navn: "Tyven",
-      by: "Trondheim",
-      vibe: ["Rolig"],
-      musikk: ["Live"],
-      beskrivelse:
-        "Tyven er et roligere utested med live musikk og intim stemning.",
-      bilde: "/bilder/tyven.jpg",
-    },
-    {
-      navn: "Heidis Bier Bar Trondheim",
-      by: "Trondheim",
-      vibe: ["Fylla", "Sosialt"],
-      musikk: ["Pop"],
-      beskrivelse:
-        "Heidis Trondheim er et sosialt og festpreget utested med popmusikk og allsang.",
-      bilde: "/bilder/heidis trondheim.jpeg",
-    },
+    hentSteder();
+  }, []);
+
+  // Lager filtervalg automatisk fra Firebase-data
+  const byer = [...new Set(steder.map((sted) => sted.By).filter(Boolean))];
+
+  const viber = [
+    ...new Set(steder.flatMap((sted) => sted.Vibe || [])),
   ];
 
-  // Filtrerer stedene etter by, vibe og musikk
+  const musikkTyper = [
+    ...new Set(steder.flatMap((sted) => sted.Musikk || [])),
+  ];
+
   const filtrerteSteder = steder.filter((sted) => {
-    const passerBy = valgtBy !== "" && sted.by === valgtBy;
-    const passerVibe = valgtVibe === "" || sted.vibe.includes(valgtVibe);
-    const passerMusikk = valgtMusikk === "" || sted.musikk.includes(valgtMusikk);
+    const passerBy = valgtBy !== "" && sted.By === valgtBy;
+    const passerVibe = valgtVibe === "" || sted.Vibe?.includes(valgtVibe);
+    const passerMusikk =
+      valgtMusikk === "" || sted.Musikk?.includes(valgtMusikk);
 
     return passerBy && passerVibe && passerMusikk;
   });
@@ -256,15 +55,7 @@ export default function Utesteder() {
         padding: "55px",
       }}
     >
-      {/* Hele innholdet */}
-      <div
-        style={{
-          display: "flex",
-          gap: "50px",
-          alignItems: "flex-start",
-        }}
-      >
-        {/* VENSTRE FILTERBOKS */}
+      <div style={{ display: "flex", gap: "50px", alignItems: "flex-start" }}>
         <div
           style={{
             width: "210px",
@@ -276,30 +67,10 @@ export default function Utesteder() {
             backdropFilter: "blur(8px)",
           }}
         >
-          {/* BYER */}
-          <h2
-            style={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#b8a7ff",
-              textShadow: "0 0 10px #6c63ff",
-              marginTop: "0px",
-              marginBottom: "18px",
-            }}
-          >
-            BYER
-          </h2>
+          <h2 style={overskriftStyle}>BYER</h2>
 
-          {["Tromsø", "Oslo", "Bergen", "Trondheim"].map((by) => (
-            <label
-              key={by}
-              style={{
-                display: "block",
-                fontSize: "16px",
-                marginBottom: "10px",
-                cursor: "pointer",
-              }}
-            >
+          {byer.map((by) => (
+            <label key={by} style={labelStyle}>
               <input
                 type="radio"
                 name="by"
@@ -310,30 +81,10 @@ export default function Utesteder() {
             </label>
           ))}
 
-          {/* VIBE */}
-          <h2
-            style={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#b8a7ff",
-              textShadow: "0 0 10px #6c63ff",
-              marginTop: "35px",
-              marginBottom: "18px",
-            }}
-          >
-            VIBE
-          </h2>
+          <h2 style={overskriftStyle}>VIBE</h2>
 
-          {["Fylla", "Sosialt", "Rolig"].map((vibe) => (
-            <label
-              key={vibe}
-              style={{
-                display: "block",
-                fontSize: "16px",
-                marginBottom: "10px",
-                cursor: "pointer",
-              }}
-            >
+          {viber.map((vibe) => (
+            <label key={vibe} style={labelStyle}>
               <input
                 type="radio"
                 name="vibe"
@@ -344,30 +95,10 @@ export default function Utesteder() {
             </label>
           ))}
 
-          {/* MUSIKK */}
-          <h2
-            style={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#b8a7ff",
-              textShadow: "0 0 10px #6c63ff",
-              marginTop: "35px",
-              marginBottom: "18px",
-            }}
-          >
-            MUSIKK
-          </h2>
+          <h2 style={overskriftStyle}>MUSIKK</h2>
 
-          {["Live", "Pop", "Techno", "Hip Hop/RnB"].map((musikk) => (
-            <label
-              key={musikk}
-              style={{
-                display: "block",
-                fontSize: "16px",
-                marginBottom: "10px",
-                cursor: "pointer",
-              }}
-            >
+          {musikkTyper.map((musikk) => (
+            <label key={musikk} style={labelStyle}>
               <input
                 type="radio"
                 name="musikk"
@@ -378,7 +109,6 @@ export default function Utesteder() {
             </label>
           ))}
 
-          {/* Nullstiller alle filter */}
           <button
             onClick={() => {
               setValgtBy("");
@@ -401,7 +131,6 @@ export default function Utesteder() {
           </button>
         </div>
 
-        {/* HOVEDINNHOLD */}
         <div style={{ flex: 1 }}>
           <h1
             style={{
@@ -415,24 +144,20 @@ export default function Utesteder() {
             Utesteder
           </h1>
 
-          {/* Vises før brukeren velger by */}
           {valgtBy === "" && (
             <p
-  style={{
-    fontSize: "24px",
-    color: "#c9c4ff",
-
-    // gjør at teksten havner midt på siden
-    textAlign: "center",
-    width: "100%",
-    marginTop: "120px",
-  }}
->
-  Velg en by for å se utesteder ✨
-</p>
+              style={{
+                fontSize: "24px",
+                color: "#c9c4ff",
+                textAlign: "center",
+                width: "100%",
+                marginTop: "120px",
+              }}
+            >
+              Velg by, vibe og musikk - finn stedet som passer deg✨
+            </p>
           )}
 
-          {/* Viser valgt by */}
           {valgtBy !== "" && (
             <h2
               style={{
@@ -445,7 +170,6 @@ export default function Utesteder() {
             </h2>
           )}
 
-          {/* Grid med cards */}
           <div
             style={{
               display: "grid",
@@ -455,7 +179,7 @@ export default function Utesteder() {
           >
             {filtrerteSteder.map((sted, index) => (
               <div
-                key={index}
+                key={sted.id}
                 onMouseEnter={() => setHoverIndex(index)}
                 onMouseLeave={() => setHoverIndex(null)}
                 style={{
@@ -468,15 +192,13 @@ export default function Utesteder() {
                       ? "0 0 35px rgba(255,0,184,0.45)"
                       : "0 0 18px rgba(108,99,255,0.18)",
                   backdropFilter: "blur(8px)",
-                  transform:
-                    hoverIndex === index ? "scale(1.04)" : "scale(1)",
+                  transform: hoverIndex === index ? "scale(1.04)" : "scale(1)",
                   transition: "0.25s ease",
                   cursor: "pointer",
                 }}
               >
-                {/* Bilde */}
                 <img
-                  src={sted.bilde}
+                  src={sted.Bilde}
                   alt={sted.navn}
                   style={{
                     width: "100%",
@@ -487,7 +209,6 @@ export default function Utesteder() {
                   }}
                 />
 
-                {/* Navn */}
                 <h3
                   style={{
                     fontSize: "24px",
@@ -499,7 +220,6 @@ export default function Utesteder() {
                   {sted.navn}
                 </h3>
 
-                {/* Vibe og musikk */}
                 <p
                   style={{
                     color: "#c9c4ff",
@@ -508,10 +228,9 @@ export default function Utesteder() {
                     marginBottom: "12px",
                   }}
                 >
-                  {sted.vibe.join(" • ")} • {sted.musikk.join(" • ")}
+                  {sted.Vibe?.join(" • ")} • {sted.Musikk?.join(" • ")}
                 </p>
 
-                {/* Beskrivelse */}
                 <p
                   style={{
                     fontSize: "14px",
@@ -520,13 +239,12 @@ export default function Utesteder() {
                     margin: 0,
                   }}
                 >
-                  {sted.beskrivelse}
+                  {sted.Beskrivelse}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Vises hvis ingen steder matcher filtrene */}
           {valgtBy !== "" && filtrerteSteder.length === 0 && (
             <p
               style={{
@@ -543,3 +261,19 @@ export default function Utesteder() {
     </div>
   );
 }
+
+const overskriftStyle = {
+  fontSize: "24px",
+  fontWeight: "800",
+  color: "#b8a7ff",
+  textShadow: "0 0 10px #6c63ff",
+  marginTop: "35px",
+  marginBottom: "18px",
+};
+
+const labelStyle = {
+  display: "block",
+  fontSize: "16px",
+  marginBottom: "10px",
+  cursor: "pointer",
+};
