@@ -7,7 +7,11 @@ import './App.css'
 import Hjem from "./pages/Hjem";
 import Utesteder from "./pages/Utesteder";
 import Hvorerfu from './pages/Hvorerfu';
+import Utesteder2 from './pages/Utesteder2';
 import Nav from './components/Nav';
+import AddSted from './pages/AddSted';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +25,13 @@ function App() {
       <Route path="/" element={<Hjem />} />
       <Route path="/utesteder" element={<Utesteder />} />
       <Route path="/hvorerfu" element={<Hvorerfu/>} />
+      <Route path="/utesteder2" element={<Utesteder2/>} />
+            <Route path="/addsted" element={<AddSted />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/login" element={<Login />} />
+
+
+
     </Routes>
 
         </>

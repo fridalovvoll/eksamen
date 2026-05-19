@@ -1,48 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import VenueCard from "../components/VenueCard";
+import { collection, getDocs, setDoc, deleteDoc, doc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { db, auth } from "../firebase";
 
+function getDagensKey() {
+  const now = new Date();
 
-/* ---------------- INITIAL DATA ---------------- */
+  // Før kl 04 teller fortsatt som gårsdagens kveld
+  if (now.getHours() < 4) {
+    now.setDate(now.getDate() - 1);
+  }
 
-const initialVenues = {
-  Tromsø: [
-  { title: "Heidis Bier Bar Tromsø", votes: 0, image: "/bilder/heidis.jpg" },
-  { title: "No Stress", votes: 0, image: "/bilder/no stress.jpg" },
-  { title: "Solid", votes: 0, image: "/bilder/solid.jpg" },
-  { title: "Verdensteateret", votes: 0, image: "/bilder/verdensteateret.jpg" },
-  { title: "Kaia", votes: 0, image: "/bilder/kaia.jpg" },
-  { title: "Skins", votes: 0, image: "/bilder/skins.jpeg"},
-],
-
-  Oslo: [
-    { title: "Jaeger", votes: 0, image: "/bilder/jaeger.jpg" },
-    { title: "The Villa", votes: 0, image: "/bilder/the villa.jpg" },
-    { title: "Nox", votes: 0, image: "/bilder/nox.jpg" },
-    { title: "Kulturhuset", votes: 0, image: "/bilder/kulturhuset.jpg" },
-    { title: "Blå", votes: 0, image: "/bilder/bla.jpg" },
-    { title: "Ingensteds", votes: 0, image: "/bilder/ingensteds.webp" },
-  ],
-  
-  Bergen: [
-    { title: "Lille", votes: 0, image: "/bilder/lille.png" },
-    { title: "Kvarteret", votes: 0, image: "/bilder/kvarteret.jpeg" },
-    { title: "Østre", votes: 0, image: "/bilder/ostre.jpeg" },
-    { title: "Fincken", votes: 0, image: "/bilder/fincken.jpg" },
-    { title: "Apollon", votes: 0, image: "/bilder/apollo.jpg" },
-    { title: "Heidis Bier Bar Bergen", votes: 0, image: "/bilder/heidis bergen.jpeg" },
-  ],
-  Trondheim: [
-    { title: "Lokal Bar", votes: 0, image: "/bilder/lokal bar.jpeg" },
-    { title: "Diskoteket", votes: 0, image: "/bilder/diskoteket.jpeg" },
-    { title: "Samfundet", votes: 0, image: "/bilder/samfundet.jpg" },
-    { title: "BrukBar", votes: 0, image: "/bilder/brukbar.avif" },
-    { title: "Tyven", votes: 0, image: "/bilder/tyven.jpg" },
-    { title: "Heidis Bier Bar Trondheim", votes: 0, image: "/bilder/heidis trondheim.jpeg" },
-  ],
-};
-
-/* ---------------- HELPER: STATUS BASERT PÅ STEMMER ---------------- */
+  return now.toISOString().split("T")[0];
+}
 
 function getStatus(votes) {
   if (votes >= 10) return { color: "red", text: "Fullt" };
@@ -50,34 +22,118 @@ function getStatus(votes) {
   return { color: "green", text: "Rolig" };
 }
 
-/* ---------------- KOMPONENT ---------------- */
-
-function Login() {
-  const [venues, setVenues] = useState(initialVenues);
+function HvorErFu() {
+  const [steder, setSteder] = useState([]);
+  const [stemmer, setStemmer] = useState([]);
+  const [bruker, setBruker] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  /* STEMMEFUNKSJON */
-  function addVote(city, index) {
-    const updated = { ...venues };
-    updated[city][index].votes += 1;
-    setVenues(updated);
+  const dagensKey = getDagensKey();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setBruker(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    async function hentData() {
+      const stederSnapshot = await getDocs(collection(db, "steder"));
+
+      const stederListe = stederSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setSteder(stederListe);
+
+      const stemmerSnapshot = await getDocs(collection(db, "stemmer"));
+
+      const stemmerListe = stemmerSnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((stemme) => stemme.dato === dagensKey);
+
+      setStemmer(stemmerListe);
+    }
+
+    hentData();
+  }, [dagensKey]);
+
+  const byer = [...new Set(steder.map((sted) => sted.By).filter(Boolean))];
+
+  const filtrerteSteder = steder.filter((sted) => {
+    const passerBy = selectedCity && sted.By === selectedCity;
+    const passerSok = sted.navn
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    return passerBy && passerSok;
+  });
+
+  function tellStemmerForSted(stedId) {
+    return stemmer.filter((stemme) => stemme.stedId === stedId).length;
   }
 
-  /* FILTRERING */
-  const getFilteredVenues = () => {
-    if (!selectedCity) return [];
-
-    let list = venues[selectedCity];
-
-    if (!searchTerm.trim()) return list;
-
-    return list.filter((v) =>
-      v.title.toLowerCase().includes(searchTerm.toLowerCase())
+  function brukerHarStemtPå(stedId) {
+    return stemmer.some(
+      (stemme) => stemme.uid === bruker?.uid && stemme.stedId === stedId
     );
-  };
+  }
 
-  const filteredVenues = getFilteredVenues();
+  async function stemPåSted(sted) {
+    if (!bruker) {
+      alert("Du må være logget inn for å stemme.");
+      return;
+    }
+
+    // Samme dokument-ID hver dag per bruker
+    const stemmeId = `${dagensKey}_${bruker.uid}`;
+
+    const nyStemme = {
+      uid: bruker.uid,
+      email: bruker.email,
+      stedId: sted.id,
+      stedNavn: sted.navn,
+      by: sted.By,
+      dato: dagensKey,
+      createdAt: new Date(),
+    };
+
+    // setDoc gjør at brukeren kan endre sted
+    await setDoc(doc(db, "stemmer", stemmeId), nyStemme);
+
+    setStemmer((gamleStemmer) => {
+      const utenMinGamle = gamleStemmer.filter(
+        (stemme) => stemme.uid !== bruker.uid
+      );
+
+      return [
+        ...utenMinGamle,
+        {
+          id: stemmeId,
+          ...nyStemme,
+        },
+      ];
+    });
+  }
+
+  async function draHjem() {
+    if (!bruker) return;
+
+    const stemmeId = `${dagensKey}_${bruker.uid}`;
+
+    await deleteDoc(doc(db, "stemmer", stemmeId));
+
+    setStemmer((gamleStemmer) =>
+      gamleStemmer.filter((stemme) => stemme.uid !== bruker.uid)
+    );
+  }
 
   return (
     <PageWrapper>
@@ -89,14 +145,19 @@ function Login() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
+        {bruker ? (
+          <LoggedInText>Logget inn som {bruker.email}</LoggedInText>
+        ) : (
+          <LoggedInText>Logg inn for å stemme</LoggedInText>
+        )}
       </TopSection>
 
       <ContentWrapper>
-        {/* VENSTRE SIDE – BYER */}
         <CityBox>
           <h3>BYER</h3>
 
-          {Object.keys(venues).map((city) => (
+          {byer.map((city) => (
             <label key={city}>
               <input
                 type="radio"
@@ -111,9 +172,10 @@ function Login() {
           <ResetButton onClick={() => setSelectedCity(null)}>
             Nullstill by
           </ResetButton>
+
+          <HomeButton onClick={draHjem}>Dra hjem</HomeButton>
         </CityBox>
 
-        {/* HØYRE SIDE – KORT */}
         <CardsWrapper>
           {!selectedCity && (
             <p style={{ gridColumn: "1 / -1", opacity: 0.7 }}>
@@ -121,27 +183,28 @@ function Login() {
             </p>
           )}
 
-          {selectedCity && filteredVenues.length === 0 && (
+          {selectedCity && filtrerteSteder.length === 0 && (
             <p style={{ gridColumn: "1 / -1", opacity: 0.7 }}>
               Ingen utesteder matcher søket ditt.
             </p>
           )}
 
           {selectedCity &&
-            filteredVenues.map((venue, index) => {
-              const status = getStatus(venue.votes);
+            filtrerteSteder.map((sted) => {
+              const votes = tellStemmerForSted(sted.id);
+              const status = getStatus(votes);
+              const harStemtHer = brukerHarStemtPå(sted.id);
 
               return (
                 <VenueCard
-  key={index}
-  title={venue.title}
-  votes={venue.votes}
-  statusColor={status.color}
-  statusText={status.text}
-  onVote={() => addVote(selectedCity, index)}
-  image={venue.image}
-/>
-
+                  key={sted.id}
+                  title={sted.navn}
+                  votes={votes}
+                  statusColor={status.color}
+                  statusText={harStemtHer ? "Du er her" : status.text}
+                  onVote={() => stemPåSted(sted)}
+                  image={sted.Bilde}
+                />
               );
             })}
         </CardsWrapper>
@@ -150,9 +213,7 @@ function Login() {
   );
 }
 
-export default Login;
-
-/* ---------------- STYLING ---------------- */
+export default HvorErFu;
 
 const PageWrapper = styled.div`
   min-height: 100vh;
@@ -193,21 +254,17 @@ const CityBox = styled.div`
   h3 {
     font-size: 1.6rem;
     font-weight: 800;
-    letter-spacing: 1px;
     margin-bottom: 15px;
     text-transform: uppercase;
     color: #b8a7ff;
-    text-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
   }
 
   label {
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 100%;
     padding: 6px 0;
     font-size: 1.1rem;
-    font-weight: 500;
     cursor: pointer;
   }
 `;
@@ -227,8 +284,6 @@ const Input = styled.input`
   font-size: 1rem;
   background: rgba(255, 255, 255, 0.08);
   color: white;
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
 
   &::placeholder {
     color: #c9c4ff;
@@ -244,12 +299,20 @@ const ResetButton = styled.button`
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s ease;
-
-  &:hover {
-    background: #ff33cc;
-    box-shadow: 0 0 15px rgba(255, 0, 184, 0.6);
-  }
 `;
 
+const HomeButton = styled.button`
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #00e1ff;
+  color: #030512;
+  font-weight: bold;
+  cursor: pointer;
+`;
 
+const LoggedInText = styled.p`
+  color: #c9c4ff;
+  margin-top: 12px;
+`;
