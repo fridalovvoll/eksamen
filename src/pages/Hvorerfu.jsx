@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import VenueCard from "../components/VenueCard";
+import Venuecard from "../components/Venuecard";
 import { collection, getDocs, setDoc, deleteDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../firebase";
@@ -196,7 +196,7 @@ function HvorErFu() {
               const harStemtHer = brukerHarStemtPå(sted.id);
 
               return (
-                <VenueCard
+                <Venuecard
                   key={sted.id}
                   title={sted.navn}
                   votes={votes}
