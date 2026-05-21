@@ -87,6 +87,9 @@ export default function Nav() {
           text-shadow: 0 0 12px #00e1ff, 0 0 30px #00e1ff !important;
           box-shadow: 0 0 25px rgba(0,225,255,0.25) !important;
         }
+        .nav-left { display: flex; }
+        .nav-right { display: flex; }
+        .nav-hamburger { display: none !important; }
         @media (max-width: 700px) {
           .nav-left { display: none !important; }
           .nav-right { display: none !important; }
@@ -129,12 +132,13 @@ const rightStyle = {
 const linkStyle = {
   color: "white",
   textDecoration: "none",
-  fontSize: "18px",
+  fontSize: "16px",
   fontWeight: "600",
-  padding: "8px 14px",
+  padding: "8px 12px",
   borderRadius: "14px",
   transition: "0.25s ease",
   textShadow: "0 0 8px rgba(0,225,255,0.15)",
+  whiteSpace: "nowrap",
 };
 
 const emailStyle = {

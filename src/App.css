@@ -48,13 +48,14 @@ body,
 
 /* HERO */
 .hero {
-  flex: 1;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .logo-main {
