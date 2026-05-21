@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import VenueCard from "../components/VenueCard";
+import VenueCard from "../components/Venuecard";
 import { collection, getDocs, setDoc, deleteDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "../firebase";
