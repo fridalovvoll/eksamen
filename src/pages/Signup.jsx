@@ -12,7 +12,6 @@ export default function Signup() {
   async function registrerBruker(e) {
     e.preventDefault();
     setFeil("");
-
     try {
       await createUserWithEmailAndPassword(auth, email, passord);
       navigate("/utesteder2");
@@ -24,7 +23,7 @@ export default function Signup() {
   return (
     <div style={sideStyle}>
       <form onSubmit={registrerBruker} style={formStyle}>
-        <h1>Registrer deg</h1>
+        <h1 style={{ margin: "0 0 8px", fontSize: "28px" }}>Registrer deg</h1>
 
         <input
           type="email"
@@ -42,14 +41,12 @@ export default function Signup() {
           style={inputStyle}
         />
 
-        {feil && <p style={{ color: "#ff6b6b" }}>{feil}</p>}
+        {feil && <p style={{ color: "#ff6b6b", margin: 0 }}>{feil}</p>}
 
-        <button type="submit" style={buttonStyle}>
-          Lag bruker
-        </button>
+        <button type="submit" style={buttonStyle}>Lag bruker</button>
 
-        <p>
-          Har du bruker? <Link to="/login">Logg inn</Link>
+        <p style={{ margin: 0, fontSize: "14px", color: "rgba(255,255,255,0.7)" }}>
+          Har du bruker? <Link to="/login" style={{ color: "#ff00b8" }}>Logg inn</Link>
         </p>
       </form>
     </div>
@@ -64,10 +61,13 @@ const sideStyle = {
   justifyContent: "center",
   alignItems: "center",
   fontFamily: "Arial",
+  padding: "20px",
+  boxSizing: "border-box",
 };
 
 const formStyle = {
-  width: "350px",
+  width: "100%",
+  maxWidth: "380px",
   padding: "30px",
   borderRadius: "20px",
   background: "rgba(255,255,255,0.06)",
@@ -75,6 +75,7 @@ const formStyle = {
   display: "flex",
   flexDirection: "column",
   gap: "15px",
+  boxSizing: "border-box",
 };
 
 const inputStyle = {
@@ -82,6 +83,8 @@ const inputStyle = {
   borderRadius: "12px",
   border: "none",
   fontSize: "16px",
+  width: "100%",
+  boxSizing: "border-box",
 };
 
 const buttonStyle = {
@@ -92,4 +95,5 @@ const buttonStyle = {
   color: "white",
   fontWeight: "bold",
   cursor: "pointer",
+  fontSize: "16px",
 };

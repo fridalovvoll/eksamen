@@ -215,104 +215,250 @@ function HvorErFu() {
 
 export default HvorErFu;
 
+
 const PageWrapper = styled.div`
   min-height: 100vh;
+
   background:
     radial-gradient(circle at 25% 35%, rgba(255, 0, 184, 0.22), transparent 35%),
     radial-gradient(circle at 75% 75%, rgba(0, 170, 255, 0.18), transparent 35%),
     #030512;
+
   color: white;
+
   font-family: "Arial", sans-serif;
+
   padding: 60px;
+
+  /* Mobil */
+  @media (max-width: 900px) {
+    padding: 25px;
+  }
 `;
+
+
+/* ========================= */
+/* TOPPEN */
+/* ========================= */
 
 const TopSection = styled.div`
   text-align: center;
   margin-bottom: 40px;
 `;
 
+
+/* Tittel */
+
 const Title = styled.h1`
   font-size: 55px;
+
   margin-bottom: 15px;
+
   color: #b8a7ff;
+
   text-shadow: 0 0 20px #6c63ff;
+
+  /* Mobil */
+  @media (max-width: 900px) {
+    font-size: 34px;
+  }
 `;
+
+
+/* ========================= */
+/* HOVEDINNHOLD */
+/* ========================= */
 
 const ContentWrapper = styled.div`
   display: flex;
+
   gap: 60px;
+
+  align-items: flex-start;
+
+  /* Mobil */
+  @media (max-width: 900px) {
+
+    /* Legger ting under hverandre */
+    flex-direction: column;
+
+    gap: 30px;
+  }
 `;
+
+
+/* ========================= */
+/* BYBOKS */
+/* ========================= */
 
 const CityBox = styled.div`
   background: rgba(255, 255, 255, 0.05);
+
   border: 1px solid rgba(255, 255, 255, 0.12);
+
   padding: 25px;
+
   border-radius: 20px;
+
   width: 220px;
+
   backdrop-filter: blur(8px);
 
   h3 {
     font-size: 1.6rem;
+
     font-weight: 800;
+
     margin-bottom: 15px;
+
     text-transform: uppercase;
+
     color: #b8a7ff;
   }
 
   label {
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
     padding: 6px 0;
+
     font-size: 1.1rem;
+
     cursor: pointer;
+  }
+
+  /* Mobil */
+  @media (max-width: 900px) {
+
+    width: 100%;
+
+    box-sizing: border-box;
   }
 `;
 
+
+/* ========================= */
+/* KORT */
+/* ========================= */
+
 const CardsWrapper = styled.div`
   display: grid;
+
+  /* 3 kolonner på pc */
   grid-template-columns: repeat(3, 1fr);
+
   gap: 40px;
+
   flex: 1;
+
+  /* Tablet */
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Mobil */
+  @media (max-width: 700px) {
+
+    /* 1 kort per rad */
+    grid-template-columns: 1fr;
+
+    gap: 25px;
+  }
 `;
+
+
+/* ========================= */
+/* SØKEFELT */
+/* ========================= */
 
 const Input = styled.input`
   width: 60%;
+
   padding: 12px;
+
   border-radius: 12px;
+
   border: none;
+
   font-size: 1rem;
+
   background: rgba(255, 255, 255, 0.08);
+
   color: white;
 
   &::placeholder {
     color: #c9c4ff;
   }
+
+  /* Mobil */
+  @media (max-width: 900px) {
+
+    width: 100%;
+
+    box-sizing: border-box;
+  }
 `;
+
+
+/* ========================= */
+/* KNAPPER */
+/* ========================= */
 
 const ResetButton = styled.button`
   margin-top: 15px;
+
   padding: 10px 14px;
+
   border-radius: 20px;
+
   border: none;
+
   background: #ff00b8;
+
   color: white;
+
   font-weight: bold;
+
   cursor: pointer;
+
+  width: 100%;
 `;
 
 const HomeButton = styled.button`
   margin-top: 12px;
+
   padding: 10px 14px;
+
   border-radius: 20px;
+
   border: none;
+
   background: #00e1ff;
+
   color: #030512;
+
   font-weight: bold;
+
   cursor: pointer;
+
+  width: 100%;
 `;
+
+
+/* ========================= */
+/* INNLOGGET TEKST */
+/* ========================= */
 
 const LoggedInText = styled.p`
   color: #c9c4ff;
+
   margin-top: 12px;
+
+  /* Mobil */
+  @media (max-width: 900px) {
+    font-size: 14px;
+  }
 `;

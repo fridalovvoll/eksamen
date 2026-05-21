@@ -1,228 +1,234 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// Firebase auth
 import { auth } from "../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function Nav() {
-
-  // Lagrer bruker som er logget inn
   const [bruker, setBruker] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Kjører når komponenten lastes inn
   useEffect(() => {
-
-    // Sjekker om bruker er logget inn
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setBruker(currentUser);
     });
-
-    // Rydder opp listener når komponent fjernes
     return () => unsubscribe();
-
   }, []);
 
-  // Logger ut bruker
   async function loggUt() {
     await signOut(auth);
+    setMenuOpen(false);
+  }
+
+  function lukkMeny() {
+    setMenuOpen(false);
   }
 
   return (
+    <>
+      <nav style={navStyle}>
+        {/* VENSTRE: lenker (skjult på mobil) */}
+        <div style={leftStyle}>
+          <Link to="/" style={linkStyle} className="nav-link">Hjem</Link>
+          <Link to="/Utesteder" style={linkStyle} className="nav-link">Utesteder</Link>
+          <Link to="/hvorerfu" style={linkStyle} className="nav-link">Hvor er fu?</Link>
+        </div>
 
-    // Hele navbaren
-    <nav
-      style={{
-        height: "90px",
+        {/* HØYRE: auth (skjult på mobil) */}
+        <div style={rightStyle}>
+          {bruker ? (
+            <>
+              <span style={emailStyle}>{bruker.email}</span>
+              <button onClick={loggUt} style={logoutButtonStyle}>Logg ut</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" style={linkStyle} className="nav-link">Login</Link>
+              <Link to="/signup" style={{ ...linkStyle, background: "rgba(0,225,255,0.08)" }} className="nav-link">Sign up</Link>
+            </>
+          )}
+        </div>
 
-        // Bakgrunn med blå glow
-        background:
-          "radial-gradient(circle at 25% 35%, rgba(0,225,255,0.16), transparent 35%), radial-gradient(circle at 75% 75%, rgba(0,170,255,0.12), transparent 35%), rgba(3,5,18,0.92)",
+        {/* HAMBURGER (vises kun på mobil) */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={hamburgerStyle}
+          aria-label="Åpne meny"
+        >
+          <span style={burgerLine(menuOpen, 0)} />
+          <span style={burgerLine(menuOpen, 1)} />
+          <span style={burgerLine(menuOpen, 2)} />
+        </button>
+      </nav>
 
-        borderBottom: "1px solid rgba(255,255,255,0.08)",
+      {/* MOBILMENY */}
+      {menuOpen && (
+        <div style={mobileMenuStyle}>
+          <Link to="/" style={mobileLinkStyle} onClick={lukkMeny}>Hjem</Link>
+          <Link to="/Utesteder" style={mobileLinkStyle} onClick={lukkMeny}>Utesteder</Link>
+          <Link to="/hvorerfu" style={mobileLinkStyle} onClick={lukkMeny}>Hvor er fu?</Link>
+          <div style={mobileDividerStyle} />
+          {bruker ? (
+            <>
+              <span style={mobileEmailStyle}>{bruker.email}</span>
+              <button onClick={loggUt} style={mobileLogoutStyle}>Logg ut</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" style={mobileLinkStyle} onClick={lukkMeny}>Login</Link>
+              <Link to="/signup" style={mobileLinkStyle} onClick={lukkMeny}>Sign up</Link>
+            </>
+          )}
+        </div>
+      )}
 
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-
-        padding: "0 40px",
-
-        backdropFilter: "blur(8px)",
-
-        // Glow rundt navbar
-        boxShadow: "0 0 25px rgba(0,225,255,0.18)",
-      }}
-    >
-
-      {/* VENSTRE SIDE */}
-      <div
-        style={{
-          display: "flex",
-          gap: "30px",
-          alignItems: "center",
-        }}
-      >
-
-        {/* HJEM */}
-        <Link to="/" style={linkStyle}>
-          Hjem
-        </Link>
-
-        {/* UTESTEDER */}
-        <Link to="/Utesteder" style={linkStyle}>
-          Utesteder
-        </Link>
-
-        {/* HVOR ER FU */}
-        <Link to="/hvorerfu" style={linkStyle}>
-          Hvor er fu?
-        </Link>
-
-        
-
-      </div>
-
-      {/* HØYRE SIDE */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "18px",
-        }}
-      >
-
-        {/* Hvis bruker er logget inn */}
-        {bruker ? (
-          <>
-
-            {/* Viser email */}
-            <span
-              style={{
-                color: "#c9f7ff",
-                fontSize: "18px",
-                fontWeight: "600",
-
-                // Glow på teksten
-                textShadow: "0 0 10px rgba(0,225,255,0.45)",
-              }}
-            >
-              {bruker.email}
-            </span>
-
-            {/* Logg ut knapp */}
-            <button
-              onClick={loggUt}
-              style={logoutButtonStyle}
-            >
-              Logg ut
-            </button>
-
-          </>
-        ) : (
-
-          <>
-            {/* Login */}
-            <Link to="/login" style={linkStyle}>
-              Login
-            </Link>
-
-            {/* Signup */}
-            <Link
-              to="/signup"
-              style={{
-                ...linkStyle,
-
-                // Litt blå bakgrunn
-                background: "rgba(0,225,255,0.08)",
-              }}
-            >
-              Sign up
-            </Link>
-          </>
-
-        )}
-      </div>
-    </nav>
+      <style>{`
+        .nav-link:hover {
+          color: #00e1ff !important;
+          text-shadow: 0 0 12px #00e1ff, 0 0 30px #00e1ff !important;
+          box-shadow: 0 0 25px rgba(0,225,255,0.25) !important;
+        }
+        @media (max-width: 700px) {
+          .nav-left { display: none !important; }
+          .nav-right { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+        }
+      `}</style>
+    </>
   );
 }
 
-/* ---------------- LINK STYLE ---------------- */
+const navStyle = {
+  height: "70px",
+  background:
+    "radial-gradient(circle at 25% 35%, rgba(0,225,255,0.16), transparent 35%), radial-gradient(circle at 75% 75%, rgba(0,170,255,0.12), transparent 35%), rgba(3,5,18,0.92)",
+  borderBottom: "1px solid rgba(255,255,255,0.08)",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "0 24px",
+  backdropFilter: "blur(8px)",
+  boxShadow: "0 0 25px rgba(0,225,255,0.18)",
+  position: "relative",
+  zIndex: 100,
+};
+
+const leftStyle = {
+  display: "flex",
+  gap: "8px",
+  alignItems: "center",
+  className: "nav-left",
+};
+
+const rightStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
+  className: "nav-right",
+};
 
 const linkStyle = {
-
   color: "white",
   textDecoration: "none",
-
-  fontSize: "22px",
+  fontSize: "18px",
   fontWeight: "600",
-
-  padding: "10px 18px",
+  padding: "8px 14px",
   borderRadius: "14px",
-
-  // Smooth overgang
   transition: "0.25s ease",
-
-  // Litt glow som standard
   textShadow: "0 0 8px rgba(0,225,255,0.15)",
 };
 
-/* ---------------- LOGOUT BUTTON ---------------- */
+const emailStyle = {
+  color: "#c9f7ff",
+  fontSize: "14px",
+  fontWeight: "600",
+  textShadow: "0 0 10px rgba(0,225,255,0.45)",
+  maxWidth: "160px",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+};
 
 const logoutButtonStyle = {
-
   background: "#00e1ff",
   border: "none",
-
   color: "#030512",
-
-  padding: "10px 18px",
-
+  padding: "8px 16px",
   borderRadius: "14px",
-
   cursor: "pointer",
-
   fontWeight: "bold",
-  fontSize: "15px",
-
-  // Glow
+  fontSize: "14px",
   boxShadow: "0 0 18px rgba(0,225,255,0.45)",
-
   transition: "0.25s ease",
 };
 
-/* ---------------- HOVER EFFEKT ---------------- */
+const hamburgerStyle = {
+  display: "none",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "5px",
+  background: "none",
+  border: "none",
+  cursor: "pointer",
+  padding: "8px",
+  borderRadius: "8px",
+};
 
-// Når musa er over link
-document.addEventListener("mouseover", (e) => {
+function burgerLine(open, index) {
+  const base = {
+    display: "block",
+    width: "24px",
+    height: "2px",
+    background: "white",
+    borderRadius: "2px",
+    transition: "0.25s ease",
+  };
+  if (open && index === 1) return { ...base, opacity: 0 };
+  if (open && index === 0) return { ...base, transform: "translateY(7px) rotate(45deg)" };
+  if (open && index === 2) return { ...base, transform: "translateY(-7px) rotate(-45deg)" };
+  return base;
+}
 
-  if (e.target.tagName === "A") {
+const mobileMenuStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "4px",
+  background: "rgba(3,5,18,0.97)",
+  borderBottom: "1px solid rgba(255,255,255,0.1)",
+  padding: "16px 24px 20px",
+  backdropFilter: "blur(12px)",
+  position: "relative",
+  zIndex: 99,
+};
 
-    // Gjør teksten blå
-    e.target.style.color = "#00e1ff";
+const mobileLinkStyle = {
+  color: "white",
+  textDecoration: "none",
+  fontSize: "20px",
+  fontWeight: "600",
+  padding: "10px 0",
+  borderBottom: "1px solid rgba(255,255,255,0.06)",
+};
 
-    // Glow effekt
-    e.target.style.textShadow =
-      "0 0 12px #00e1ff, 0 0 30px #00e1ff";
+const mobileDividerStyle = {
+  borderTop: "1px solid rgba(255,255,255,0.1)",
+  margin: "8px 0",
+};
 
-    // Ekstra glow rundt
-    e.target.style.boxShadow =
-      "0 0 25px rgba(0,225,255,0.25)";
-  }
-});
+const mobileEmailStyle = {
+  color: "#c9f7ff",
+  fontSize: "14px",
+  padding: "8px 0",
+};
 
-// Når musa går bort
-document.addEventListener("mouseout", (e) => {
-
-  if (e.target.tagName === "A") {
-
-    // Tilbake til hvit
-    e.target.style.color = "white";
-
-    // Vanlig glow
-    e.target.style.textShadow =
-      "0 0 8px rgba(0,225,255,0.15)";
-
-    // Fjerner box shadow
-    e.target.style.boxShadow = "none";
-  }
-});
+const mobileLogoutStyle = {
+  background: "#00e1ff",
+  border: "none",
+  color: "#030512",
+  padding: "12px",
+  borderRadius: "14px",
+  cursor: "pointer",
+  fontWeight: "bold",
+  fontSize: "16px",
+  marginTop: "4px",
+};
