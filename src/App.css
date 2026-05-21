@@ -1,6 +1,10 @@
-body {
+html,
+body,
+#root {
   margin: 0;
-  background: linear-gradient(to bottom, #050510, #0b0b2b);
+  padding: 0;
+  min-height: 100%;
+  background: #050510;
   color: white;
   font-family: Arial, sans-serif;
 }
@@ -12,7 +16,7 @@ body {
   padding: 30px;
   display: flex;
   justify-content: space-around;
-  align-items: center top;
+  align-items: center;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
@@ -25,149 +29,95 @@ body {
 
 .navbar a:hover {
   color: #00d9ff;
-
-  text-shadow:
-    0 0 5px #00d9ff,
-    0 0 10px #00d9ff,
-    0 0 20px #00d9ff;
+  text-shadow: 0 0 5px #00d9ff, 0 0 10px #00d9ff, 0 0 20px #00d9ff;
 }
 
-/* HERO SECTION */
+/* HELE HJEM-SIDEN */
+.home-page {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  flex-direction: column;
+
+  background:
+    radial-gradient(circle at 18% 35%, rgba(255, 0, 170, 0.35), transparent 30%),
+    radial-gradient(circle at 80% 75%, rgba(0, 217, 255, 0.25), transparent 35%),
+    linear-gradient(to bottom, #050510, #0b0b2b);
+}
+
+/* HERO */
 .hero {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Neon glow bakgrunn */
-.hero::before,
-.hero::after {
-  content: "";
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.4;
-}
-
-.hero::before {
-  background: #ff00aa;
-  top: 10%;
-  left: 10%;
-}
-
-.hero::after {
-  background: #00d9ff;
-  bottom: 10%;
-  right: 10%;
-}
-
-/* Innhold */
-.hero-content {
-  z-index: 2;
-}
-
-/* Overskrift */
-.logo-main {
-  font-size: 6rem;
-  letter-spacing: 8px;
-  margin: 0;
-  color: #5b59d5;
-
-  text-shadow:
-    0 0 5px #6e5acf,
-    0 0 10px #6e5acf,
-    0 0 20px #6e5acf,
-    0 0 40px #6e5acf;
-}
-
-/* Festlig tekst */
-.logo-script {
-  font-size: 7rem;
-  margin-top: -20px;
-  margin-bottom: 20px;
-
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
-  font-weight: 700;
-  color: #ff00aa;
-
-  text-shadow:
-    0 0 5px #ff00aa,
-    0 0 10px #ff00aa,
-    0 0 20px #ff00aa,
-    0 0 60px #ff00aa;
-}
-
-/* Undertekst */
-.subtitle {
-  font-size: 1.5rem;
-  color: white;
-}
-
-.info-section {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 40px;
-
-  padding: 80px 40px;
-  flex-wrap: wrap;
-}
-
-.about-box,
-.contact-box {
-  width: 500px;
-
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-
-  padding: 50px;
-  border-radius: 20px;
-
-  text-align: center;
-}
-
-.contact-box {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
 }
+
+.logo-main {
+  font-size: 5rem;
+  font-weight: 800;
+  letter-spacing: 6px;
+  margin: 0;
+  color: #8c82ff;
+  text-shadow: 0 0 10px #8c82ff, 0 0 25px #8c82ff, 0 0 50px rgba(140,130,255,0.9);
+}
+
+.logo-script {
+  font-size: 5.8rem;
+  font-weight: 800;
+  margin: -15px 0 25px 0;
+  color: #ff00aa;
+  font-family: 'Oswald', Arial, sans-serif;
+  text-shadow: 0 0 10px #ff00aa, 0 0 25px #ff00aa, 0 0 55px rgba(255,0,170,0.9);
+}
+
+.subtext {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff66d9;
+  margin: 0;
+  text-shadow: 0 0 8px #ff66d9, 0 0 20px rgba(255,102,217,0.8);
+}
+
+/* INFO NEDERST */
 .info-section {
+  width: 100%;
+  box-sizing: border-box;
+
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 70px;
 
-  padding: 60px 80px;
+  padding: 35px 80px;
 
-  background: rgba(255,255,255,0.08);
+  background: linear-gradient(
+    to right,
+    rgba(5, 5, 16, 0.96),
+    rgba(8, 15, 35, 0.96),
+    rgba(8, 30, 50, 0.96)
+  );
 
-  border-top: 1px solid rgba(255,255,255,0.2);
-
-  margin-top: 100px;
+  border-top: 1px solid rgba(255,255,255,0.12);
 }
 
 .about-box,
 .contact-box {
-  background: transparent;
-  width: 45%;
-  padding: 0;
-  border-radius: 0;
+  width: 48%;
   text-align: left;
 }
 
 .about-box h2,
 .contact-box h2 {
-  font-size: 35px;
-  margin-bottom: 20px;
+  font-size: 30px;
+  margin: 0 0 12px 0;
 }
 
 .about-box p,
 .contact-box p {
-  font-size: 20px;
-  line-height: 1.8;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(255,255,255,0.9);
 }
