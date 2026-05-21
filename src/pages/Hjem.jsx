@@ -61,7 +61,28 @@ export default function Hjem() {
           Velg stemmningen. Finn stedet.
         </p>
 
+  {/* OM OSS */}
+  
+ <section className="info-section">
+
+  <div className="about-box">
+    <h2>Om oss</h2>
+
+    <p>
+      Vi hjelper deg med å finne det perfekte utestedet!
+      Enten du er ute etter en rolig bar, en livlig nattklubb
+      eller det beste stedet å tilbringe kvelden med venner.
+    </p>
+  </div>
+
+  <div className="contact-box">
+    <h2>Kontakt oss</h2>
+
+    <p>Gmail: Finndittutested@gmail.no</p>
+  </div>
+
+</section>
       </div>
     </div>
-  )
+  );
 }

@@ -11,6 +11,7 @@ import Nav from './components/Nav';
 import AddSted from './pages/AddSted';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)

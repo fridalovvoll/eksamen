@@ -108,3 +108,66 @@ body {
   font-size: 1.5rem;
   color: white;
 }
+
+.info-section {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 40px;
+
+  padding: 80px 40px;
+  flex-wrap: wrap;
+}
+
+.about-box,
+.contact-box {
+  width: 500px;
+
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+
+  padding: 50px;
+  border-radius: 20px;
+
+  text-align: center;
+}
+
+.contact-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.info-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: 60px 80px;
+
+  background: rgba(255,255,255,0.08);
+
+  border-top: 1px solid rgba(255,255,255,0.2);
+
+  margin-top: 100px;
+}
+
+.about-box,
+.contact-box {
+  background: transparent;
+  width: 45%;
+  padding: 0;
+  border-radius: 0;
+  text-align: left;
+}
+
+.about-box h2,
+.contact-box h2 {
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.about-box p,
+.contact-box p {
+  font-size: 20px;
+  line-height: 1.8;
+}
