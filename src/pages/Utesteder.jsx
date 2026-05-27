@@ -19,6 +19,7 @@ export default function Utesteder() {
       }));
       setSteder(liste);
     }
+
     hentSteder();
   }, []);
 
@@ -26,13 +27,13 @@ export default function Utesteder() {
   const viber = [...new Set(steder.flatMap((sted) => sted.Vibe || []))];
   const musikkTyper = [...new Set(steder.flatMap((sted) => sted.Musikk || []))];
 
- const filtrerteSteder = steder.filter((sted) => {
-  const passerBy = valgtBy === "" || sted.By === valgtBy;
-  const passerVibe = valgtVibe === "" || sted.Vibe?.includes(valgtVibe);
-  const passerMusikk = valgtMusikk === "" || sted.Musikk?.includes(valgtMusikk);
+  const filtrerteSteder = steder.filter((sted) => {
+    const passerBy = valgtBy === "" || sted.By === valgtBy;
+    const passerVibe = valgtVibe === "" || sted.Vibe?.includes(valgtVibe);
+    const passerMusikk = valgtMusikk === "" || sted.Musikk?.includes(valgtMusikk);
 
-  return passerBy && passerVibe && passerMusikk;
-});
+    return passerBy && passerVibe && passerMusikk;
+  });
 
   function nullstill() {
     setValgtBy("");
@@ -40,37 +41,54 @@ export default function Utesteder() {
     setValgtMusikk("");
   }
 
-  const filterPanel = (
-    <div style={filterPanelStyle}>
-      <h2 style={overskriftStyle}>BYER</h2>
-      {byer.map((by) => (
-        <label key={by} style={labelStyle}>
-          <input type="radio" name="by" checked={valgtBy === by} onChange={() => setValgtBy(by)} />
-          {by}
-        </label>
-      ))}
+  function FilterPanel({ type }) {
+    return (
+      <div style={filterPanelStyle}>
+        <h2 style={overskriftStyle}>BYER</h2>
+        {byer.map((by) => (
+          <label key={by} style={labelStyle}>
+            <input
+              type="radio"
+              name={`by-${type}`}
+              checked={valgtBy === by}
+              onChange={() => setValgtBy(by)}
+            />
+            {" "}{by}
+          </label>
+        ))}
 
-      <h2 style={overskriftStyle}>VIBE</h2>
-      {viber.map((vibe) => (
-        <label key={vibe} style={labelStyle}>
-          <input type="radio" name="vibe" checked={valgtVibe === vibe} onChange={() => setValgtVibe(vibe)} />
-          {vibe}
-        </label>
-      ))}
+        <h2 style={overskriftStyle}>VIBE</h2>
+        {viber.map((vibe) => (
+          <label key={vibe} style={labelStyle}>
+            <input
+              type="radio"
+              name={`vibe-${type}`}
+              checked={valgtVibe === vibe}
+              onChange={() => setValgtVibe(vibe)}
+            />
+            {" "}{vibe}
+          </label>
+        ))}
 
-      <h2 style={overskriftStyle}>MUSIKK</h2>
-      {musikkTyper.map((musikk) => (
-        <label key={musikk} style={labelStyle}>
-          <input type="radio" name="musikk" checked={valgtMusikk === musikk} onChange={() => setValgtMusikk(musikk)} />
-          {musikk}
-        </label>
-      ))}
+        <h2 style={overskriftStyle}>MUSIKK</h2>
+        {musikkTyper.map((musikk) => (
+          <label key={musikk} style={labelStyle}>
+            <input
+              type="radio"
+              name={`musikk-${type}`}
+              checked={valgtMusikk === musikk}
+              onChange={() => setValgtMusikk(musikk)}
+            />
+            {" "}{musikk}
+          </label>
+        ))}
 
-      <button onClick={nullstill} style={nullstillKnappStyle}>
-        Nullstill filter
-      </button>
-    </div>
-  );
+        <button onClick={nullstill} style={nullstillKnappStyle}>
+          Nullstill filter
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div style={sideStyle}>
@@ -80,32 +98,54 @@ export default function Utesteder() {
           grid-template-columns: repeat(3, 1fr);
           gap: 28px;
         }
+
+        .desktop-filter {
+          display: block;
+        }
+
+        .mobil-filter-knapp {
+          display: none;
+        }
+
+        .mobil-filter-panel {
+          display: none;
+        }
+
         @media (max-width: 1100px) {
-          .utesteder-grid { grid-template-columns: repeat(2, 1fr); }
+          .utesteder-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
+
         @media (max-width: 700px) {
-          .utesteder-grid { grid-template-columns: 1fr; gap: 18px; }
-        }
-        .desktop-filter { display: block; }
-        .mobil-filter-knapp { display: none; }
-        @media (max-width: 700px) {
-          .desktop-filter { display: none; }
-          .mobil-filter-knapp { display: block; }
+          .utesteder-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+          }
+
+          .desktop-filter {
+            display: none;
+          }
+
+          .mobil-filter-knapp {
+            display: block;
+          }
+
+          .mobil-filter-panel {
+            display: block;
+            margin-bottom: 20px;
+          }
         }
       `}</style>
 
       <div style={layoutStyle}>
-
-        {/* FILTER – vises på desktop */}
         <div className="desktop-filter">
-          {filterPanel}
+          <FilterPanel type="desktop" />
         </div>
 
-        {/* INNHOLD */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 style={titelStyle}>Utesteder</h1>
 
-          {/* MOBIL: filter-knapp */}
           <button
             className="mobil-filter-knapp"
             onClick={() => setFilterOpen(!filterOpen)}
@@ -114,10 +154,9 @@ export default function Utesteder() {
             {filterOpen ? "Skjul filter ▲" : "Vis filter ▼"}
           </button>
 
-          {/* MOBIL: filter-panel (åpner seg) */}
           {filterOpen && (
-            <div className="mobil-filter-knapp" style={{ marginBottom: "20px" }}>
-              {filterPanel}
+            <div className="mobil-filter-panel">
+              <FilterPanel type="mobil" />
             </div>
           )}
 
@@ -128,7 +167,7 @@ export default function Utesteder() {
           )}
 
           {valgtBy !== "" && (
-            <h2 style={{ fontSize: "20px", marginBottom: "20px", fontWeight: "600" }}>
+            <h2 style={valgtByStyle}>
               Utesteder i {valgtBy}
             </h2>
           )}
@@ -144,9 +183,10 @@ export default function Utesteder() {
                   border: "1px solid rgba(255,255,255,0.12)",
                   borderRadius: "20px",
                   padding: "14px",
-                  boxShadow: hoverIndex === index
-                    ? "0 0 35px rgba(255,0,184,0.45)"
-                    : "0 0 18px rgba(108,99,255,0.18)",
+                  boxShadow:
+                    hoverIndex === index
+                      ? "0 0 35px rgba(255,0,184,0.45)"
+                      : "0 0 18px rgba(108,99,255,0.18)",
                   backdropFilter: "blur(8px)",
                   transform: hoverIndex === index ? "scale(1.03)" : "scale(1)",
                   transition: "0.25s ease",
@@ -156,21 +196,18 @@ export default function Utesteder() {
                 <img
                   src={sted.Bilde}
                   alt={sted.navn}
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "16px",
-                    boxShadow: "0 0 20px rgba(255,0,184,0.25)",
-                  }}
+                  style={bildeStyle}
                 />
-                <h3 style={{ fontSize: "22px", fontWeight: "800", marginTop: "12px", marginBottom: "6px" }}>
+
+                <h3 style={kortTittelStyle}>
                   {sted.navn}
                 </h3>
-                <p style={{ color: "#c9c4ff", fontSize: "15px", fontWeight: "600", marginBottom: "10px" }}>
+
+                <p style={kortInfoStyle}>
                   {sted.Vibe?.join(" • ")} • {sted.Musikk?.join(" • ")}
                 </p>
-                <p style={{ fontSize: "14px", lineHeight: "1.5", color: "rgba(255,255,255,0.92)", margin: 0 }}>
+
+                <p style={kortTekstStyle}>
                   {sted.Beskrivelse}
                 </p>
               </div>
@@ -178,7 +215,7 @@ export default function Utesteder() {
           </div>
 
           {valgtBy !== "" && filtrerteSteder.length === 0 && (
-            <p style={{ fontSize: "18px", marginTop: "30px", color: "#c9c4ff" }}>
+            <p style={ingenResultatStyle}>
               Ingen utesteder passer med valgene dine.
             </p>
           )}
@@ -273,4 +310,45 @@ const mobilFilterKnappStyle = {
   cursor: "pointer",
   marginBottom: "16px",
   width: "100%",
+};
+
+const valgtByStyle = {
+  fontSize: "20px",
+  marginBottom: "20px",
+  fontWeight: "600",
+};
+
+const bildeStyle = {
+  width: "100%",
+  height: "150px",
+  objectFit: "cover",
+  borderRadius: "16px",
+  boxShadow: "0 0 20px rgba(255,0,184,0.25)",
+};
+
+const kortTittelStyle = {
+  fontSize: "22px",
+  fontWeight: "800",
+  marginTop: "12px",
+  marginBottom: "6px",
+};
+
+const kortInfoStyle = {
+  color: "#c9c4ff",
+  fontSize: "15px",
+  fontWeight: "600",
+  marginBottom: "10px",
+};
+
+const kortTekstStyle = {
+  fontSize: "14px",
+  lineHeight: "1.5",
+  color: "rgba(255,255,255,0.92)",
+  margin: 0,
+};
+
+const ingenResultatStyle = {
+  fontSize: "18px",
+  marginTop: "30px",
+  color: "#c9c4ff",
 };

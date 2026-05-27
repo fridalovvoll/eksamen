@@ -11,6 +11,7 @@ export default function Nav() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setBruker(currentUser);
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -26,30 +27,39 @@ export default function Nav() {
   return (
     <>
       <nav style={navStyle}>
-        {/* VENSTRE: lenker (skjult på mobil) */}
-        <div style={leftStyle}>
+        {/* Venstre meny på PC */}
+        <div className="nav-left" style={leftStyle}>
           <Link to="/" style={linkStyle} className="nav-link">Hjem</Link>
           <Link to="/Utesteder" style={linkStyle} className="nav-link">Utesteder</Link>
           <Link to="/hvorerfu" style={linkStyle} className="nav-link">Hvor er fu?</Link>
         </div>
 
-        {/* HØYRE: auth (skjult på mobil) */}
-        <div style={rightStyle}>
+        {/* Høyre meny på PC */}
+        <div className="nav-right" style={rightStyle}>
           {bruker ? (
             <>
               <span style={emailStyle}>{bruker.email}</span>
-              <button onClick={loggUt} style={logoutButtonStyle}>Logg ut</button>
+              <button onClick={loggUt} style={logoutButtonStyle}>
+                Logg ut
+              </button>
             </>
           ) : (
             <>
               <Link to="/login" style={linkStyle} className="nav-link">Login</Link>
-              <Link to="/signup" style={{ ...linkStyle, background: "rgba(0,225,255,0.08)" }} className="nav-link">Sign up</Link>
+              <Link
+                to="/signup"
+                style={{ ...linkStyle, background: "rgba(0,225,255,0.08)" }}
+                className="nav-link"
+              >
+                Sign up
+              </Link>
             </>
           )}
         </div>
 
-        {/* HAMBURGER (vises kun på mobil) */}
+        {/* Hamburger på mobil */}
         <button
+          className="nav-hamburger"
           onClick={() => setMenuOpen(!menuOpen)}
           style={hamburgerStyle}
           aria-label="Åpne meny"
@@ -60,17 +70,21 @@ export default function Nav() {
         </button>
       </nav>
 
-      {/* MOBILMENY */}
+      {/* Mobilmeny */}
       {menuOpen && (
         <div style={mobileMenuStyle}>
           <Link to="/" style={mobileLinkStyle} onClick={lukkMeny}>Hjem</Link>
           <Link to="/Utesteder" style={mobileLinkStyle} onClick={lukkMeny}>Utesteder</Link>
           <Link to="/hvorerfu" style={mobileLinkStyle} onClick={lukkMeny}>Hvor er fu?</Link>
+
           <div style={mobileDividerStyle} />
+
           {bruker ? (
             <>
               <span style={mobileEmailStyle}>{bruker.email}</span>
-              <button onClick={loggUt} style={mobileLogoutStyle}>Logg ut</button>
+              <button onClick={loggUt} style={mobileLogoutStyle}>
+                Logg ut
+              </button>
             </>
           ) : (
             <>
@@ -87,13 +101,31 @@ export default function Nav() {
           text-shadow: 0 0 12px #00e1ff, 0 0 30px #00e1ff !important;
           box-shadow: 0 0 25px rgba(0,225,255,0.25) !important;
         }
-        .nav-left { display: flex; }
-        .nav-right { display: flex; }
-        .nav-hamburger { display: none !important; }
+
+        .nav-left {
+          display: flex;
+        }
+
+        .nav-right {
+          display: flex;
+        }
+
+        .nav-hamburger {
+          display: none !important;
+        }
+
         @media (max-width: 700px) {
-          .nav-left { display: none !important; }
-          .nav-right { display: none !important; }
-          .nav-hamburger { display: flex !important; }
+          .nav-left {
+            display: none !important;
+          }
+
+          .nav-right {
+            display: none !important;
+          }
+
+          .nav-hamburger {
+            display: flex !important;
+          }
         }
       `}</style>
     </>
@@ -116,17 +148,13 @@ const navStyle = {
 };
 
 const leftStyle = {
-  display: "flex",
   gap: "8px",
   alignItems: "center",
-  className: "nav-left",
 };
 
 const rightStyle = {
-  display: "flex",
   alignItems: "center",
   gap: "12px",
-  className: "nav-right",
 };
 
 const linkStyle = {
@@ -162,11 +190,9 @@ const logoutButtonStyle = {
   fontWeight: "bold",
   fontSize: "14px",
   boxShadow: "0 0 18px rgba(0,225,255,0.45)",
-  transition: "0.25s ease",
 };
 
 const hamburgerStyle = {
-  display: "none",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
@@ -187,9 +213,19 @@ function burgerLine(open, index) {
     borderRadius: "2px",
     transition: "0.25s ease",
   };
-  if (open && index === 1) return { ...base, opacity: 0 };
-  if (open && index === 0) return { ...base, transform: "translateY(7px) rotate(45deg)" };
-  if (open && index === 2) return { ...base, transform: "translateY(-7px) rotate(-45deg)" };
+
+  if (open && index === 1) {
+    return { ...base, opacity: 0 };
+  }
+
+  if (open && index === 0) {
+    return { ...base, transform: "translateY(7px) rotate(45deg)" };
+  }
+
+  if (open && index === 2) {
+    return { ...base, transform: "translateY(-7px) rotate(-45deg)" };
+  }
+
   return base;
 }
 
