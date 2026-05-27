@@ -29,7 +29,16 @@ export default function Nav() {
       <nav style={navStyle}>
         {/* Venstre meny på PC */}
         <div className="nav-left" style={leftStyle}>
-          <Link to="/" style={linkStyle} className="nav-link">Hjem</Link>
+          <Link to="/" className="nav-link">
+
+  <img
+  src="/bilder/logo.jpeg"
+  alt="Logo"
+  className="nav-logo"
+  style={{ height: "32px", width: "auto", objectFit: "contain" }}
+/>
+
+</Link>
           <Link to="/Utesteder" style={linkStyle} className="nav-link">Utesteder</Link>
           <Link to="/hvorerfu" style={linkStyle} className="nav-link">Hvor er fu?</Link>
         </div>

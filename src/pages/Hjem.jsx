@@ -3,11 +3,21 @@ import React from "react";
 export default function Hjem() {
   return (
     <div className="home-page">
-      <main className="hero">
-        <h1 className="logo-main">Finn ditt neste</h1>
-        <h2 className="logo-script">utested</h2>
-        <p className="subtext">Velg stemmningen. Finn stedet.</p>
-      </main>
+     <main className="hero">
+  <img
+    src="/bilder/logo.jpeg"
+    alt="Logo"
+    className="hero-logo"
+  />
+
+  <h1 className="logo-main">Finn ditt neste</h1>
+
+  <h2 className="logo-script">utested</h2>
+
+  <p className="subtext">
+    Velg stemmningen. Finn stedet.
+  </p>
+</main>
 
       <section className="info-section">
         <div className="about-box">
