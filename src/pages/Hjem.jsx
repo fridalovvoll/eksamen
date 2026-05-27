@@ -5,7 +5,7 @@ export default function Hjem() {
     <div className="home-page">
      <main className="hero">
   <img
-    src="/bilder/logo.jpeg"
+    src="/bilder/logo.png"
     alt="Logo"
     className="hero-logo"
   />

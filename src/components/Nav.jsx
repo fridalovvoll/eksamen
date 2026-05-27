@@ -32,7 +32,7 @@ export default function Nav() {
           <Link to="/" className="nav-link">
 
   <img
-  src="/bilder/logo.jpeg"
+  src="/bilder/logo.png"
   alt="Logo"
   className="nav-logo"
   style={{ height: "32px", width: "auto", objectFit: "contain" }}
