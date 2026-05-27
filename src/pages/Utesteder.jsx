@@ -27,10 +27,13 @@ export default function Utesteder() {
   const musikkTyper = [...new Set(steder.flatMap((sted) => sted.Musikk || []))];
 
   const filtrerteSteder = steder.filter((sted) => {
-    const passerBy = valgtBy !== "" && sted.By === valgtBy;
-    const passerVibe = valgtVibe === "" || sted.Vibe?.includes(valgtVibe);
-    const passerMusikk = valgtMusikk === "" || sted.Musikk?.includes(valgtMusikk);
-    return passerBy && passerVibe && passerMusikk;
+   const filtrerteSteder = steder.filter((sted) => {
+  const passerBy = valgtBy === "" || sted.By === valgtBy;
+  const passerVibe = valgtVibe === "" || sted.Vibe?.includes(valgtVibe);
+  const passerMusikk = valgtMusikk === "" || sted.Musikk?.includes(valgtMusikk);
+
+  return passerBy && passerVibe && passerMusikk;
+});
   });
 
   function nullstill() {
