@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-function VenueCard({ title, votes, statusColor, statusText, onVote, image }) {
+function Venuecard({ title, votes, statusColor, statusText, onVote, image }) {
   return (
     <Card>
       <ImageWrapper>
@@ -21,7 +21,7 @@ function VenueCard({ title, votes, statusColor, statusText, onVote, image }) {
 }
 
 
-export default VenueCard;
+export default Venuecard;
 
 /* ---------------- STYLING ---------------- */
 
