@@ -87,10 +87,17 @@ function HvorErFu() {
   }
 
   async function stemPåSted(sted) {
-    if (!bruker) {
-      alert("Du må være logget inn for å stemme.");
-      return;
-    }
+if (!bruker) {
+  const gåTilLogin = window.confirm(
+    "Du må være logget inn for å stemme.\n\nTrykk OK for å gå til login."
+  );
+
+  if (gåTilLogin) {
+    window.location.href = "/login";
+  }
+
+  return;
+}
 
     // Samme dokument-ID hver dag per bruker
     const stemmeId = `${dagensKey}_${bruker.uid}`;
