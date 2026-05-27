@@ -54,7 +54,7 @@ export default function Nav() {
             </>
           ) : (
             <>
-              <Link to="/login" style={linkStyle} className="nav-link">Login</Link>
+              <Link to="/login" style={linkStyle} className="nav-link">Log in</Link>
               <Link
                 to="/signup"
                 style={{ ...linkStyle, background: "rgba(0,225,255,0.08)" }}
